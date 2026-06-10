@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oz Installers — Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: { 400: '#FCD34D', 500: '#F59E0B', 600: '#D97706' }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased">
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useCallback, useRef } = React;
+
+    const API_GET    = '/api/settings';
+    const API_UPDATE = '/api/settings/update';
+
+    const CATEGORY_META = {
+      system:  { label: 'System',        icon: '⚙️',  desc: 'Maintenance mode and booking availability' },
+      banner:  { label: 'Promo Banner',  icon: '📢',  desc: 'Global promotional banner settings' },
+      pricing: { label: 'Pricing',       icon: '💰',  desc: 'Service prices, travel surcharges, and extras' }
+    };
+    const CATEGORY_ORDER = ['system', 'banner', 'pricing'];
+
+    // ──────────────────────────────────────────────
+    // Toast notification
+    // ──────────────────────────────────────────────
+    function Toast({ message, type, onClose }) {
+      useEffect(() => {
+        const t = setTimeout(onClose, 3500);
+        return () => clearTimeout(t);
+      }, []);
+      const bg = { success: 'bg-emerald-600', error: 'bg-red-600', info: 'bg-slate-700' };
+      return (
+        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-2xl text-white text-sm font-semibold animate-pulse ${bg[type]}`}>
+          <span>{type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ'}</span>
+          <span>{message}</span>
+          <button onClick={onClose} className="ml-1 opacity-60 hover:opacity-100 text-xs">✕</button>
+        </div>
+      );
+    }
+
+    // ──────────────────────────────────────────────
+    // Toggle switch
+    // ──────────────────────────────────────────────
+    function Toggle({ checked, onChange }) {
+      return (
+        <button
+          type="button"
+          onClick={() => onChange(!checked)}
+          className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${checked ? 'bg-brand-500' : 'bg-slate-600'}`}
+          role="switch"
+          aria-checked={checked}
+        >
+          <span className={`inline-block h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200 ${checked ? 'translate-x-6' : 'translate-x-1'}`} />
+        </button>
+      );
+    }
+
+    // ──────────────────────────────────────────────
+    // Input renderer — picks the right control per data_type
+    // ──────────────────────────────────────────────
+    function SettingInput({ setting, value, onChange }) {
+      const { data_type, key } = setting;
+
+      if (data_type === 'boolean') {
+        return (
+          <div className="flex items-center gap-3">
+            <Toggle checked={Boolean(value)} onChange={onChange} />
+            <span className={`text-sm font-medium ${value ? 'text-emerald-400' : 'text-slate-400'}`}>
+              {value ? 'Enabled' : 'Disabled'}
+            </span>
+          </div>
+        );
+      }
+
+      if (data_type === 'number') {
+        return (
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400 text-sm font-medium">$</span>
+            <input
+              type="number"
+              min="0"
+              value={value ?? 0}
+              onChange={(e) => onChange(parseInt(e.target.value, 10) || 0)}
+              className="w-32 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:border-brand-500 focus:outline-none transition-colors"
+            />
+          </div>
+        );
+      }
+
+      if (data_type === 'string') {
+        const isColor = key.includes('color') || key.includes('colour');
+        return (
+          <div className="flex items-center gap-3 flex-wrap">
+            {isColor && (
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={value || '#f59e0b'}
+                  onChange={(e) => onChange(e.target.value)}
+                  className="h-9 w-12 rounded-md border border-slate-600 bg-transparent cursor-pointer p-0.5"
+                />
+                <span className="text-xs text-slate-400 font-mono">{value || '#f59e0b'}</span>
+              </div>
+            )}
+            <input
+              type="text"
+              value={value || ''}
+              onChange={(e) => onChange(e.target.value)}
+              className="flex-1 min-w-64 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:border-brand-500 focus:outline-none transition-colors"
+            />
+          </div>
+        );
+      }
+
+      // JSON with a price field → structured price editor
+      if (data_type === 'json' && typeof value === 'object' && value !== null && 'price' in value) {
+        return (
+          <div className="flex flex-wrap gap-3 items-center">
+            <input
+              type="text"
+              value={value.label || ''}
+              onChange={(e) => onChange({ ...value, label: e.target.value })}
+              placeholder="Display label shown to customers"
+              className="flex-1 min-w-52 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:border-brand-500 focus:outline-none transition-colors"
+            />
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400 text-sm font-medium">Price $</span>
+              <input
+                type="number"
+                min="0"
+                value={value.price ?? 0}
+                onChange={(e) => onChange({ ...value, price: parseInt(e.target.value, 10) || 0 })}
+                className="w-28 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:border-brand-500 focus:outline-none transition-colors"
+              />
+            </div>
+          </div>
+        );
+      }
+
+      // Fallback: raw JSON textarea
+      return (
+        <textarea
+          rows={3}
+          value={typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value ?? '')}
+          onChange={(e) => {
+            try { onChange(JSON.parse(e.target.value)); }
+            catch { onChange(e.target.value); }
+          }}
+          className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-300 font-mono focus:border-brand-500 focus:outline-none transition-colors resize-y"
+        />
+      );
+    }
+
+    // ──────────────────────────────────────────────
+    // Single setting row
+    // ──────────────────────────────────────────────
+    function SettingRow({ setting, onSave, onToast }) {
+      const [localValue, setLocalValue] = useState(setting.value);
+      const [saving, setSaving] = useState(false);
+
+      // Keep local value in sync when parent refreshes data
+      const prevValueRef = useRef(setting.value);
+      useEffect(() => {
+        if (JSON.stringify(prevValueRef.current) !== JSON.stringify(setting.value)) {
+          prevValueRef.current = setting.value;
+          setLocalValue(setting.value);
+        }
+      }, [setting.value]);
+
+      const isDirty = JSON.stringify(localValue) !== JSON.stringify(setting.value);
+
+      const handleSave = async () => {
+        setSaving(true);
+        try {
+          await onSave(setting.key, localValue);
+          onToast('Saved — ' + setting.label, 'success');
+        } catch (err) {
+          onToast('Error: ' + err.message, 'error');
+          setLocalValue(setting.value); // revert on failure
+        } finally {
+          setSaving(false);
+        }
+      };
+
+      const updatedStr = setting.updated_at
+        ? new Date(setting.updated_at).toLocaleString('en-AU', {
+            day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+          })
+        : null;
+
+      return (
+        <div className={`rounded-xl border p-4 transition-all duration-200 ${isDirty ? 'border-brand-500/60 bg-slate-800/90 shadow-lg shadow-brand-500/10' : 'border-slate-700/40 bg-slate-800/40 hover:border-slate-600/60'}`}>
+          <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+            {/* Label + input */}
+            <div className="flex-1 min-w-0 space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-semibold text-sm text-slate-100">{setting.label}</span>
+                <span className="text-xs text-slate-500 font-mono bg-slate-900 px-2 py-0.5 rounded-md">{setting.key}</span>
+                {isDirty && (
+                  <span className="text-xs font-semibold bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full">
+                    unsaved
+                  </span>
+                )}
+              </div>
+              {setting.description && (
+                <p className="text-xs text-slate-400">{setting.description}</p>
+              )}
+              <SettingInput setting={setting} value={localValue} onChange={setLocalValue} />
+              {!isDirty && updatedStr && (
+                <p className="text-xs text-slate-600">Last saved {updatedStr}</p>
+              )}
+            </div>
+
+            {/* Save / Revert buttons */}
+            {isDirty && (
+              <div className="flex sm:flex-col gap-2 shrink-0">
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="px-5 py-2 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold rounded-lg transition-colors whitespace-nowrap"
+                >
+                  {saving ? 'Saving…' : 'Save'}
+                </button>
+                <button
+                  onClick={() => setLocalValue(setting.value)}
+                  className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-medium rounded-lg transition-colors"
+                >
+                  Revert
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // ──────────────────────────────────────────────
+    // Category section
+    // ──────────────────────────────────────────────
+    function CategorySection({ category, settings, onSave, onToast }) {
+      const meta = CATEGORY_META[category] || { label: category, icon: '📋', desc: '' };
+      return (
+        <section className="mb-10">
+          <div className="flex items-start gap-3 mb-5 pb-4 border-b border-slate-800">
+            <span className="text-3xl leading-none mt-0.5">{meta.icon}</span>
+            <div>
+              <h2 className="text-xl font-bold text-white">{meta.label}</h2>
+              {meta.desc && <p className="text-sm text-slate-400 mt-0.5">{meta.desc}</p>}
+            </div>
+          </div>
+          <div className="space-y-3">
+            {settings.map((s) => (
+              <SettingRow key={s.key} setting={s} onSave={onSave} onToast={onToast} />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    // ──────────────────────────────────────────────
+    // Login screen
+    // ──────────────────────────────────────────────
+    function LoginScreen({ onLogin }) {
+      const [token, setToken]   = useState('');
+      const [error, setError]   = useState('');
+      const [loading, setLoading] = useState(false);
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!token.trim()) return;
+        setLoading(true);
+        setError('');
+        try {
+          // Auth-ping: POST with empty updates array — returns 200 if token is valid, 401 if not
+          const res = await fetch(API_UPDATE, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ updates: [] })
+          });
+          if (res.status === 401) {
+            setError('Invalid admin token. Please check and try again.');
+            return;
+          }
+          if (!res.ok) {
+            setError('Server error. Please try again shortly.');
+            return;
+          }
+          sessionStorage.setItem('oz_admin_token', token);
+          onLogin(token);
+        } catch {
+          setError('Could not reach the server. Check your network connection.');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex items-center justify-center p-6">
+          <div className="w-full max-w-md">
+            {/* Logo */}
+            <div className="flex items-center gap-3 mb-8 justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-brand-500 flex items-center justify-center text-xl shadow-lg shadow-brand-500/30">
+                ⚡
+              </div>
+              <div>
+                <h1 className="text-2xl font-extrabold text-white tracking-tight">Oz Installers</h1>
+                <p className="text-slate-400 text-sm font-medium">Admin Dashboard</p>
+              </div>
+            </div>
+
+            {/* Card */}
+            <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-8 shadow-2xl">
+              <h2 className="text-lg font-bold text-white mb-1">Sign in</h2>
+              <p className="text-slate-400 text-sm mb-6">
+                Enter your admin secret token to manage app settings.
+              </p>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Admin Token
+                  </label>
+                  <input
+                    type="password"
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
+                    placeholder="Paste your ADMIN_SECRET_TOKEN"
+                    required
+                    autoFocus
+                    className="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:outline-none transition-colors"
+                  />
+                </div>
+                {error && (
+                  <div className="bg-red-900/30 border border-red-700/50 rounded-lg px-4 py-3">
+                    <p className="text-red-300 text-sm">{error}</p>
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  disabled={loading || !token.trim()}
+                  className="w-full py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-colors text-sm"
+                >
+                  {loading ? 'Verifying…' : 'Enter Dashboard →'}
+                </button>
+              </form>
+            </div>
+
+            <p className="text-center text-slate-600 text-xs mt-5">
+              Set <code className="text-slate-500">ADMIN_SECRET_TOKEN</code> in Netlify environment variables.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // ──────────────────────────────────────────────
+    // Dashboard
+    // ──────────────────────────────────────────────
+    function Dashboard({ token, onLogout, onToast }) {
+      const [settings, setSettings] = useState([]);
+      const [loading,  setLoading]  = useState(true);
+      const [fetchErr, setFetchErr] = useState('');
+
+      const fetchSettings = useCallback(async () => {
+        setLoading(true);
+        setFetchErr('');
+        try {
+          const res = await fetch(API_GET);
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.error || 'Failed to load settings');
+          setSettings(json.data || []);
+        } catch (err) {
+          setFetchErr(err.message);
+        } finally {
+          setLoading(false);
+        }
+      }, []);
+
+      useEffect(() => { fetchSettings(); }, [fetchSettings]);
+
+      const handleSave = async (key, value) => {
+        const res = await fetch(API_UPDATE, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ updates: [{ key, value }] })
+        });
+        const json = await res.json();
+        const result = json.results?.[0];
+        if (!res.ok || !result?.success) {
+          throw new Error(result?.error || json.error || 'Save failed');
+        }
+        // Optimistically update local cache
+        setSettings((prev) =>
+          prev.map((s) => s.key === key
+            ? { ...s, value, updated_at: result.data?.updated_at || new Date().toISOString() }
+            : s
+          )
+        );
+      };
+
+      // Group and order settings by category
+      const grouped = settings.reduce((acc, s) => {
+        (acc[s.category] = acc[s.category] || []).push(s);
+        return acc;
+      }, {});
+      const categories = [
+        ...CATEGORY_ORDER.filter((c) => grouped[c]),
+        ...Object.keys(grouped).filter((c) => !CATEGORY_ORDER.includes(c))
+      ];
+
+      return (
+        <div className="min-h-screen">
+          {/* Sticky header */}
+          <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-sm border-b border-slate-800">
+            <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-sm shadow shadow-brand-500/40">⚡</div>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-bold text-white">Oz Installers</span>
+                  <span className="text-slate-500 text-sm">/ Admin</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={fetchSettings}
+                  title="Reload settings from database"
+                  className="text-slate-400 hover:text-white text-sm px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors flex items-center gap-2"
+                >
+                  <span>↻</span>
+                  <span className="hidden sm:inline">Refresh</span>
+                </button>
+                <button
+                  onClick={() => { sessionStorage.removeItem('oz_admin_token'); onLogout(); }}
+                  className="text-slate-400 hover:text-white text-sm px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors"
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <main className="max-w-4xl mx-auto px-6 py-10">
+            {/* Page title */}
+            <div className="mb-10">
+              <h1 className="text-3xl font-extrabold text-white tracking-tight mb-2">App Settings</h1>
+              <p className="text-slate-400 text-sm">
+                Changes are saved directly to Supabase. The live website reads these values on each page load.
+              </p>
+            </div>
+
+            {/* Loading state */}
+            {loading && (
+              <div className="flex items-center justify-center py-24">
+                <div className="text-center">
+                  <div className="text-4xl mb-4 animate-spin inline-block">⚡</div>
+                  <p className="text-slate-400 text-sm">Loading settings…</p>
+                </div>
+              </div>
+            )}
+
+            {/* Error state */}
+            {!loading && fetchErr && (
+              <div className="bg-red-900/20 border border-red-700/50 rounded-2xl p-6 mb-8">
+                <p className="font-semibold text-red-300 mb-1">Failed to load settings</p>
+                <p className="text-red-400 text-sm mb-4">{fetchErr}</p>
+                <button
+                  onClick={fetchSettings}
+                  className="text-sm text-red-300 hover:text-white underline"
+                >
+                  Try again
+                </button>
+              </div>
+            )}
+
+            {/* Settings */}
+            {!loading && !fetchErr && categories.map((cat) => (
+              <CategorySection
+                key={cat}
+                category={cat}
+                settings={grouped[cat]}
+                onSave={handleSave}
+                onToast={onToast}
+              />
+            ))}
+
+            {!loading && !fetchErr && settings.length === 0 && (
+              <div className="text-center py-20 text-slate-500">
+                <p className="text-4xl mb-4">🗄️</p>
+                <p className="font-medium">No settings found.</p>
+                <p className="text-sm mt-1">Run the SQL schema in Supabase to seed the initial data.</p>
+              </div>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    // ──────────────────────────────────────────────
+    // Root App
+    // ──────────────────────────────────────────────
+    function App() {
+      const [token,   setToken]   = useState(() => sessionStorage.getItem('oz_admin_token') || '');
+      const [authed,  setAuthed]  = useState(() => Boolean(sessionStorage.getItem('oz_admin_token')));
+      const [toast,   setToast]   = useState(null);
+
+      const showToast = (message, type = 'info') => setToast({ message, type });
+
+      return (
+        <>
+          {!authed
+            ? <LoginScreen onLogin={(t) => { setToken(t); setAuthed(true); }} />
+            : <Dashboard token={token} onLogout={() => { setToken(''); setAuthed(false); }} onToast={showToast} />
+          }
+          {toast && (
+            <Toast
+              message={toast.message}
+              type={toast.type}
+              onClose={() => setToast(null)}
+            />
+          )}
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

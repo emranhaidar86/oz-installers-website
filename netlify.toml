@@ -1,0 +1,28 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# /api/settings/update MUST be listed before /api/settings
+# to prevent the wildcard from swallowing the more-specific path.
+[[redirects]]
+  from   = "/api/settings/update"
+  to     = "/.netlify/functions/update-settings"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from   = "/api/settings"
+  to     = "/.netlify/functions/get-settings"
+  status = 200
+  force  = true
+
+# Block search engines from indexing the admin panel
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag  = "noindex, nofollow"
+    X-Frame-Options = "DENY"
+    Cache-Control = "no-store"

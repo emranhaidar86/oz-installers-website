@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Book an Oz Installers technician online for TV mounting, Starlink, smart security, appliances, and assembly in Adelaide." />
+  <title>Book Now | Oz Installers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="custom.css" />
+  <style>
+    .page-hero { --page-image: url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=85"); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+      <nav class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="pricing.html">Pricing</a>
+        <a class="btn btn-primary" href="book.html">Book Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="hero-kicker">Book Online</span>
+      <h1>Tell us the job. We will handle the install.</h1>
+      <p>Send through your details, suburb, preferred date, and job notes. If you came from the calculator, your estimate is already attached.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container booking-layout">
+      <div class="booking-panel">
+        <div class="step-row" aria-label="Booking progress">
+          <span id="step-dot-1" class="step-dot active">1</span>
+          <span class="step-line"></span>
+          <span id="step-dot-2" class="step-dot">2</span>
+        </div>
+
+        <div id="price-banner" class="price-banner">
+          Estimate attached: <span id="price-amount">$0</span>
+        </div>
+
+        <form id="booking-form" novalidate>
+          <section class="form-step" id="form-step-1">
+            <div class="form-card">
+              <span class="eyebrow">Step 1</span>
+              <h2 style="margin:8px 0 6px">Your details</h2>
+              <p style="color:var(--muted); margin:0 0 22px">We use these to confirm the booking and send technician updates.</p>
+              <div class="form-grid">
+                <label class="field-label">Full name
+                  <input class="input-field" id="full-name" autocomplete="name" placeholder="Sarah Thompson" />
+                  <span class="field-error-text" id="full-name-error">Please enter your full name.</span>
+                </label>
+                <label class="field-label">Phone number
+                  <input class="input-field" id="phone" autocomplete="tel" placeholder="04XX XXX XXX" />
+                  <span class="field-error-text" id="phone-error">Please enter a valid phone number.</span>
+                </label>
+                <label class="field-label field-full">Email address
+                  <input class="input-field" id="email" type="email" autocomplete="email" placeholder="you@example.com" />
+                  <span class="field-error-text" id="email-error">Please enter a valid email address.</span>
+                </label>
+              </div>
+            </div>
+            <div class="action-row" style="justify-content:flex-end; margin-top:16px">
+              <button class="btn btn-primary" type="button" id="next-btn">Continue <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </section>
+
+          <section class="form-step hidden" id="form-step-2">
+            <div class="form-card">
+              <span class="eyebrow">Step 2</span>
+              <h2 style="margin:8px 0 6px">Job details</h2>
+              <p style="color:var(--muted); margin:0 0 22px">A few practical details help us send the right technician with the right tools.</p>
+              <div class="form-grid">
+                <label class="field-label field-full">Suburb or region
+                  <select id="book-suburb" class="input-field">
+                    <option value="">Select your suburb / region</option>
+                    <optgroup label="Adelaide CBD and inner">
+                      <option>Adelaide CBD</option>
+                      <option>Norwood</option>
+                      <option>Unley</option>
+                      <option>Burnside</option>
+                      <option>Prospect</option>
+                      <option>Mitcham</option>
+                    </optgroup>
+                    <optgroup label="Southern suburbs">
+                      <option>Marion</option>
+                      <option>Brighton</option>
+                      <option>Glenelg</option>
+                      <option>Christies Beach</option>
+                      <option>Morphett Vale</option>
+                    </optgroup>
+                    <optgroup label="Northern and eastern suburbs">
+                      <option>Campbelltown</option>
+                      <option>Mawson Lakes</option>
+                      <option>Tea Tree Gully</option>
+                      <option>Salisbury</option>
+                      <option>Modbury</option>
+                    </optgroup>
+                    <optgroup label="Adelaide Hills">
+                      <option>Stirling</option>
+                      <option>Hahndorf</option>
+                      <option>Mount Barker</option>
+                      <option>Lobethal</option>
+                    </optgroup>
+                    <option>Other</option>
+                  </select>
+                  <span class="field-error-text" id="book-suburb-error">Please select your suburb or region.</span>
+                </label>
+                <label class="field-label">Preferred date
+                  <input class="input-field" id="preferred-date" type="date" />
+                </label>
+                <label class="field-label">Preferred time
+                  <select class="input-field" id="preferred-time">
+                    <option>Any time</option>
+                    <option>Morning</option>
+                    <option>Afternoon</option>
+                    <option>Priority same-day if available</option>
+                  </select>
+                </label>
+                <label class="field-label field-full">Job notes
+                  <textarea class="input-field" id="job-notes" rows="8" placeholder="Example: 65 inch TV on brick wall, soundbar under TV, please hide cables if possible."></textarea>
+                </label>
+              </div>
+            </div>
+            <div class="action-row" style="justify-content:space-between; margin-top:16px">
+              <button class="btn btn-secondary" type="button" id="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+              <button class="btn btn-primary" type="submit"><i class="fa-solid fa-calendar-check"></i> Confirm My Booking</button>
+            </div>
+          </section>
+        </form>
+      </div>
+
+      <aside class="info-stack">
+        <div class="info-card">
+          <i class="fa-solid fa-clipboard-check"></i>
+          <h3>What happens next?</h3>
+          <p>Your booking is reviewed, then a technician confirms the job details, arrival window, and any special access needs.</p>
+        </div>
+        <div class="info-card">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h3>Covered on every job</h3>
+          <p>$10M public liability insurance, careful surface protection, and a tidy finish before handover.</p>
+        </div>
+        <div class="info-card">
+          <i class="fa-solid fa-phone"></i>
+          <h3>Prefer to call?</h3>
+          <p>Use the form for fastest routing, or call during business hours for urgent jobs.</p>
+          <a class="btn btn-secondary" style="width:100%; margin-top:16px" href="tel:+61800000000">1800 OZ INST</a>
+        </div>
+        <div class="area-card" style="padding:24px">
+          <h3 style="margin-top:0">Popular service areas</h3>
+          <div class="area-list">
+            <span>Adelaide CBD</span><span>Glenelg</span><span>Marion</span><span>Brighton</span><span>Mawson Lakes</span><span>Adelaide Hills</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="success-modal" id="success-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <i class="fa-solid fa-circle-check"></i>
+      <h2 id="modal-title">Booking captured</h2>
+      <p style="color:var(--muted)">Your request is ready for the Oz Installers team. A technician will confirm the details and arrival window.</p>
+      <button class="btn btn-primary" id="modal-close" style="width:100%; margin-top:16px">Back to Home</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a><p>Premium installation services across Greater Adelaide.</p></div>
+      <div><h3>Explore</h3><a href="index.html">Home</a><a href="services.html">Services</a><a href="pricing.html">Pricing</a></div>
+      <div><h3>Services</h3><a href="services.html#av">TV Mounting</a><a href="services.html#antenna">Starlink</a><a href="services.html#furniture">Assembly</a></div>
+      <div><h3>Trust</h3><a href="#">$10M insured</a><a href="#">Same-day metro</a><a href="#">Local technicians</a></div>
+    </div>
+    <div class="container footer-bottom">Copyright 2026 Oz Installers. Adelaide, South Australia.</div>
+  </footer>
+
+  <script>
+    let currentStep = 1;
+
+    function showStep(step) {
+      currentStep = step;
+      document.getElementById('form-step-1').classList.toggle('hidden', step !== 1);
+      document.getElementById('form-step-2').classList.toggle('hidden', step !== 2);
+      document.getElementById('step-dot-1').className = step === 1 ? 'step-dot active' : 'step-dot done';
+      document.getElementById('step-dot-2').className = step === 2 ? 'step-dot active' : 'step-dot';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function clearError(id) {
+      const field = document.getElementById(id);
+      const error = document.getElementById(`${id}-error`);
+      if (field) field.classList.remove('field-error');
+      if (error) error.classList.remove('visible');
+    }
+
+    function showError(id) {
+      const field = document.getElementById(id);
+      const error = document.getElementById(`${id}-error`);
+      if (field) field.classList.add('field-error');
+      if (error) error.classList.add('visible');
+    }
+
+    function validateStep(step) {
+      let valid = true;
+      if (step === 1) {
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim());
+        [['full-name', document.getElementById('full-name').value.trim().length > 1], ['phone', document.getElementById('phone').value.replace(/\s/g, '').length >= 8], ['email', emailOk]].forEach(([id, ok]) => {
+          clearError(id);
+          if (!ok) {
+            showError(id);
+            valid = false;
+          }
+        });
+      }
+      if (step === 2) {
+        clearError('book-suburb');
+        if (!document.getElementById('book-suburb').value) {
+          showError('book-suburb');
+          valid = false;
+        }
+      }
+      return valid;
+    }
+
+    function prefillFromCalculator() {
+      const params = new URLSearchParams(window.location.search);
+      const summary = params.get('summary');
+      const total = params.get('total');
+      if (!summary || !total) return;
+
+      document.getElementById('job-notes').value = `PRICING ESTIMATE SUMMARY\n${decodeURIComponent(summary)}\n\nEstimated Total: $${total}\n\nAdd any specific notes below:`;
+      document.getElementById('price-banner').classList.add('visible');
+      document.getElementById('price-amount').textContent = `$${total}`;
+    }
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      if (validateStep(1)) showStep(2);
+    });
+    document.getElementById('back-btn').addEventListener('click', () => showStep(1));
+    document.getElementById('booking-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (validateStep(2)) document.getElementById('success-modal').classList.add('visible');
+    });
+    document.getElementById('modal-close').addEventListener('click', () => window.location.href = 'index.html');
+    document.getElementById('success-modal').addEventListener('click', (event) => {
+      if (event.target.id === 'success-modal') event.currentTarget.classList.remove('visible');
+    });
+
+    ['full-name', 'phone', 'email', 'book-suburb'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', () => clearError(id));
+      document.getElementById(id).addEventListener('change', () => clearError(id));
+    });
+
+    const toggle = document.getElementById('menu-toggle');
+    const links = document.getElementById('nav-links');
+    toggle.addEventListener('click', () => {
+      links.classList.toggle('open');
+      document.body.classList.toggle('menu-open');
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      prefillFromCalculator();
+      showStep(1);
+    });
+  </script>
+</body>
+</html>

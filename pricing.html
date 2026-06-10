@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Build an instant Oz Installers quote for Adelaide TV mounting, Starlink, antenna, security, appliances, and furniture assembly." />
+  <title>Pricing Calculator | Oz Installers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="custom.css" />
+  <style>
+    .page-hero { --page-image: url("https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=2200&q=85"); }
+  </style>
+  <script src="js/settings-loader.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+      <nav class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a class="active" href="pricing.html">Pricing</a>
+        <a class="btn btn-primary" href="book.html">Book Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero calculator-hero">
+    <div class="container">
+      <span class="hero-kicker">Transparent Pricing</span>
+      <h1>Design your install visit.</h1>
+      <p>Choose the job type, quantities, extras, and booking speed. Your live estimate follows you and carries every detail into booking.</p>
+      <div class="calculator-hero-strip">
+        <span><i class="fa-solid fa-location-dot"></i> Coverage check</span>
+        <span><i class="fa-solid fa-layer-group"></i> Multi-item quotes</span>
+        <span><i class="fa-solid fa-receipt"></i> Live estimate</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container pricing-layout">
+      <div class="price-panel">
+        <section class="price-card calculator-card">
+          <div class="calc-card-head">
+            <div class="calc-step-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div>
+              <span class="eyebrow">Job Basics</span>
+              <h3>Where are we installing?</h3>
+              <p>Start with coverage and access details so the estimate is grounded in the real job.</p>
+            </div>
+          </div>
+          <div class="quote-basics">
+            <label class="field-label" for="customer-postcode">Postcode
+              <input id="customer-postcode" class="input-field" inputmode="numeric" maxlength="4" placeholder="e.g. 5000" />
+            </label>
+            <label class="field-label" for="travel-region">Suburb or region
+              <select id="travel-region" class="input-field">
+                <option value="metro">Adelaide CBD / Metropolitan - no travel surcharge</option>
+                <option value="outer">Outer metro - Salisbury, Mawson Lakes, Tea Tree Gully - +$25</option>
+                <option value="hills">Adelaide Hills / regional - Stirling, Hahndorf, Mount Barker - +$50</option>
+              </select>
+            </label>
+            <label class="field-label" for="quote-intent">I want to
+              <select id="quote-intent" class="input-field">
+                <option value="booking">Get a price and book</option>
+                <option value="quote">Get a quote only</option>
+                <option value="callback">Request a callback</option>
+              </select>
+            </label>
+            <label class="field-label" for="property-type">Property type
+              <select id="property-type" class="input-field">
+                <option value="House">House</option>
+                <option value="Apartment">Apartment / unit</option>
+                <option value="Townhouse">Townhouse</option>
+                <option value="Business">Business / office</option>
+              </select>
+            </label>
+            <label class="field-label field-full" for="site-notes">Access notes
+              <input id="site-notes" class="input-field" placeholder="Example: lift access, steep driveway, brick wall, parking available" />
+            </label>
+          </div>
+          <div id="coverage-message" class="coverage-message neutral">
+            Enter a postcode to check Adelaide service coverage.
+          </div>
+        </section>
+
+        <section class="price-card calculator-card">
+          <div class="calc-card-head">
+            <div class="calc-step-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <div>
+              <span class="eyebrow">Step 1</span>
+              <h3>Pick install services</h3>
+              <p>Add multiple items under each service. Two or more paid service items unlock a $20 combined visit discount.</p>
+            </div>
+          </div>
+          <div id="service-hint" class="coverage-message neutral">
+            Select a main service to reveal its quantities and options.
+          </div>
+
+          <div class="service-choice-grid">
+          <label class="toggle-option service-option" for="svc-tv">
+            <input id="svc-tv" type="checkbox" />
+            <span class="choice-icon"><i class="fa-solid fa-tv"></i></span>
+            <span><strong>TV / Audio Visual</strong><small>Mounting, soundbars, streaming setup, cable management.</small></span>
+            <span class="price">from $120</span>
+          </label>
+          <div class="option-group" id="tv-options">
+            <div class="quantity-row">
+              <span><strong>Under 43 inches</strong><small>Small rooms, bedrooms, compact screens.</small></span>
+              <label>Qty <input id="tv-small-qty" class="qty-input" type="number" min="0" max="20" value="0" /></label>
+              <span class="price">$120 each</span>
+            </div>
+            <div class="quantity-row">
+              <span><strong>44 to 65 inches</strong><small>Most living room and media room installs.</small></span>
+              <label>Qty <input id="tv-medium-qty" class="qty-input" type="number" min="0" max="20" value="1" /></label>
+              <span class="price">$150 each</span>
+            </div>
+            <div class="quantity-row">
+              <span><strong>66 inches and above</strong><small>Includes 75, 85, 98 inch and oversized screens.</small></span>
+              <label>Qty <input id="tv-large-qty" class="qty-input" type="number" min="0" max="20" value="0" /></label>
+              <span class="price">$200 each</span>
+            </div>
+          </div>
+
+          <label class="toggle-option service-option" for="svc-antenna">
+            <input id="svc-antenna" type="checkbox" />
+            <span class="choice-icon"><i class="fa-solid fa-satellite-dish"></i></span>
+            <span><strong>Antenna / Starlink</strong><small>Digital TV, Starlink mounts, signal testing, cable routing.</small></span>
+            <span class="price">from $160</span>
+          </label>
+          <div class="option-group" id="antenna-options">
+            <div class="quantity-row">
+              <span><strong>Antenna / Starlink install item</strong><small>Use quantity for multiple dishes, points, or separate install tasks.</small></span>
+              <label>Qty <input id="antenna-qty" class="qty-input" type="number" min="0" max="20" value="1" /></label>
+              <span class="price">$160 each</span>
+            </div>
+          </div>
+
+          <label class="toggle-option service-option" for="svc-security">
+            <input id="svc-security" type="checkbox" />
+            <span class="choice-icon"><i class="fa-solid fa-shield-halved"></i></span>
+            <span><strong>Smart Home Security</strong><small>Cameras, video doorbells, smart locks, mobile app setup.</small></span>
+            <span class="price">from $180</span>
+          </label>
+          <div class="option-group" id="security-options">
+            <div class="quantity-row">
+              <span><strong>Security install item</strong><small>Use quantity for multiple cameras, locks, doorbells, or access points.</small></span>
+              <label>Qty <input id="security-qty" class="qty-input" type="number" min="0" max="50" value="1" /></label>
+              <span class="price">$180 each</span>
+            </div>
+          </div>
+
+          <label class="toggle-option service-option" for="svc-whitegoods">
+            <input id="svc-whitegoods" type="checkbox" />
+            <span class="choice-icon"><i class="fa-solid fa-blender"></i></span>
+            <span><strong>Whitegoods / Appliances</strong><small>Dishwashers, laundry appliances, integrated fridges.</small></span>
+            <span class="price">from $130</span>
+          </label>
+          <div class="option-group" id="wg-options">
+            <div class="quantity-row">
+              <span><strong>Standard appliance</strong><small>Freestanding washer, dryer, basic dishwasher.</small></span>
+              <label>Qty <input id="wg-standard-qty" class="qty-input" type="number" min="0" max="20" value="1" /></label>
+              <span class="price">$130 each</span>
+            </div>
+            <div class="quantity-row">
+              <span><strong>Complex / integrated appliance</strong><small>Integrated dishwasher, stacked pair, built-in fridge.</small></span>
+              <label>Qty <input id="wg-complex-qty" class="qty-input" type="number" min="0" max="20" value="0" /></label>
+              <span class="price">$180 each</span>
+            </div>
+          </div>
+
+          <label class="toggle-option service-option" for="svc-furniture">
+            <input id="svc-furniture" type="checkbox" />
+            <span class="choice-icon"><i class="fa-solid fa-couch"></i></span>
+            <span><strong>Furniture Assembly</strong><small>IKEA, wardrobes, desks, shelving, wall anchoring.</small></span>
+            <span class="price">from $110</span>
+          </label>
+          <div class="option-group" id="furniture-options">
+            <div class="quantity-row">
+              <span><strong>Furniture assembly item</strong><small>Use quantity for multiple items or furniture sets.</small></span>
+              <label>Qty <input id="furniture-qty" class="qty-input" type="number" min="0" max="50" value="1" /></label>
+              <span class="price">$110 each</span>
+            </div>
+          </div>
+          </div>
+        </section>
+
+        <section class="price-card calculator-card">
+          <div class="calc-card-head">
+            <div class="calc-step-icon"><i class="fa-solid fa-sliders"></i></div>
+            <div>
+              <span class="eyebrow">Step 2</span>
+              <h3>Extras and site complexity</h3>
+              <p>Choose the finish, access, and clean-up details that change time on site.</p>
+            </div>
+          </div>
+          <div class="extras-grid">
+            <label class="toggle-option extra-option" for="complex-cable_inwall"><input id="complex-cable_inwall" type="checkbox" /><span class="choice-icon"><i class="fa-solid fa-route"></i></span><span><strong>In-wall cable concealment</strong><small>Premium hidden cable finish where wall cavity allows.</small></span><span class="price">+$120</span></label>
+            <label class="toggle-option extra-option" for="complex-cable_trunking"><input id="complex-cable_trunking" type="checkbox" /><span class="choice-icon"><i class="fa-solid fa-grip-lines"></i></span><span><strong>External cable trunking</strong><small>Neat surface-mounted cable channel.</small></span><span class="price">+$55</span></label>
+            <label class="toggle-option extra-option" for="complex-ceiling_access"><input id="complex-ceiling_access" type="checkbox" /><span class="choice-icon"><i class="fa-solid fa-house"></i></span><span><strong>Ceiling space access</strong><small>Roof cavity access for cabling or signal work.</small></span><span class="price">+$65</span></label>
+            <label class="toggle-option extra-option" for="complex-starlink_upgrade"><input id="complex-starlink_upgrade" type="checkbox" /><span class="choice-icon"><i class="fa-solid fa-satellite"></i></span><span><strong>Starlink roof mount upgrade</strong><small>Full roof bracket, weather seal, and cable run.</small></span><span class="price">+$150</span></label>
+            <label class="toggle-option extra-option" for="addon-packaging"><input id="addon-packaging" type="checkbox" /><span class="choice-icon"><i class="fa-solid fa-box-open"></i></span><span><strong>Packaging removal</strong><small>Cardboard and heavy packaging removed from site.</small></span><span class="price">+$35</span></label>
+          </div>
+        </section>
+
+        <section class="price-card calculator-card">
+          <div class="calc-card-head">
+            <div class="calc-step-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <div>
+              <span class="eyebrow">Step 3</span>
+              <h3>Booking speed</h3>
+              <p>Standard suits planned installs. Priority helps when the job needs attention today.</p>
+            </div>
+          </div>
+          <div class="speed-grid">
+            <label class="toggle-option speed-option" for="urgency-standard"><input id="urgency-standard" name="urgency" type="radio" value="standard" checked /><span class="choice-icon"><i class="fa-regular fa-calendar"></i></span><span><strong>Standard booking window</strong><small>Next available appointment.</small></span><span class="price">$0</span></label>
+            <label class="toggle-option speed-option" for="urgency-priority"><input id="urgency-priority" name="urgency" type="radio" value="priority" /><span class="choice-icon"><i class="fa-solid fa-bolt"></i></span><span><strong>Priority same-day request</strong><small>Best for urgent Adelaide metro jobs.</small></span><span class="price">+$45</span></label>
+          </div>
+        </section>
+      </div>
+
+      <aside class="receipt-card calculator-receipt">
+        <div class="receipt-topper"><i class="fa-solid fa-receipt"></i><span class="eyebrow">Live Estimate</span></div>
+        <h2 style="margin:8px 0 6px">Your job total</h2>
+        <p style="color:var(--muted); margin:0 0 18px">Prices include GST and update as you choose options.</p>
+        <div id="quote-context" class="quote-context"></div>
+        <div id="receipt-items"><p style="color:var(--muted); margin:0">Select a service to start.</p></div>
+        <div id="discount-banner" class="discount-banner">Multi-service discount applied: -$20</div>
+        <div class="total-row">
+          <strong>Estimated total</strong>
+          <strong id="receipt-total">$0</strong>
+        </div>
+        <a id="lock-in-desktop" class="btn btn-primary" style="width:100%; margin-top:18px" href="book.html"><i class="fa-solid fa-lock"></i> Lock In This Price</a>
+        <a id="quote-only-desktop" class="btn btn-secondary" style="width:100%; margin-top:10px" href="book.html">Send Quote Request</a>
+        <a class="btn btn-secondary" style="width:100%; margin-top:10px" href="pricing.html">Reset Calculator</a>
+      </aside>
+    </div>
+  </main>
+
+  <div id="sticky-bubble" class="sticky-bubble">
+    <div><strong>$<span id="mobile-total">0</span></strong><br /><small>Estimated total</small></div>
+    <a id="lock-in-mobile" class="btn btn-primary" href="book.html">Lock In</a>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a><p>Premium installation services across Greater Adelaide.</p></div>
+      <div><h3>Explore</h3><a href="index.html">Home</a><a href="services.html">Services</a><a href="book.html">Book Now</a></div>
+      <div><h3>Popular</h3><a href="pricing.html?service=tv">TV quote</a><a href="pricing.html?service=antenna">Starlink quote</a><a href="pricing.html?service=whitegoods">Appliance quote</a></div>
+      <div><h3>Trust</h3><a href="#">$10M insured</a><a href="#">Same-day metro</a><a href="#">Adelaide owned</a></div>
+    </div>
+    <div class="container footer-bottom">Copyright 2026 Oz Installers. Adelaide, South Australia.</div>
+  </footer>
+
+  <script>
+    // Fallback pricing — used if the API is unreachable.
+    // These values match the database seed exactly.
+    const DEFAULT_PRICING = {
+      tvSizes: {
+        small: { label: 'TV under 43 inches installation', price: 120 },
+        medium: { label: 'TV 44 to 65 inches installation', price: 150 },
+        large: { label: 'TV 66 inches and above installation', price: 200 }
+      },
+      services: {
+        antenna: { label: 'Antenna / Starlink installation', price: 160 },
+        security: { label: 'Smart home security installation', price: 180 },
+        furniture: { label: 'Furniture assembly', price: 110 }
+      },
+      whitegoodsTypes: {
+        standard: { label: 'Standard appliance installation', price: 130 },
+        complex: { label: 'Complex / integrated appliance installation', price: 180 }
+      },
+      travel: {
+        metro: { label: 'Adelaide metro travel', price: 0 },
+        outer: { label: 'Outer metro travel surcharge', price: 25 },
+        hills: { label: 'Adelaide Hills / regional surcharge', price: 50 }
+      },
+      complexity: {
+        cable_inwall: { label: 'In-wall cable concealment', price: 120 },
+        cable_trunking: { label: 'External cable trunking', price: 55 },
+        ceiling_access: { label: 'Ceiling space access', price: 65 },
+        starlink_upgrade: { label: 'Starlink roof mount upgrade', price: 150 }
+      },
+      addons: { packaging: { label: 'Packaging removal', price: 35 } },
+      urgency: {
+        standard: { label: 'Standard booking window', price: 0 },
+        priority: { label: 'Priority same-day request', price: 45 }
+      },
+      multiDiscount: 20
+    };
+
+    // PRICING is populated by fetchPricing() on DOMContentLoaded.
+    // Falls back to DEFAULT_PRICING if the API is unavailable.
+    let PRICING = DEFAULT_PRICING;
+
+    async function fetchPricing() {
+      try {
+        const res = await fetch('/api/settings?category=pricing');
+        if (!res.ok) return;
+        const { data } = await res.json();
+        if (!data || !data.length) return;
+        const m = {};
+        data.forEach((s) => { m[s.key] = s.value; });
+        const pick = (key, fallback) => (m[key] !== undefined ? m[key] : fallback);
+        PRICING = {
+          tvSizes: {
+            small:  pick('pricing.tv.small',  DEFAULT_PRICING.tvSizes.small),
+            medium: pick('pricing.tv.medium', DEFAULT_PRICING.tvSizes.medium),
+            large:  pick('pricing.tv.large',  DEFAULT_PRICING.tvSizes.large)
+          },
+          services: {
+            antenna:  pick('pricing.antenna',  DEFAULT_PRICING.services.antenna),
+            security: pick('pricing.security', DEFAULT_PRICING.services.security),
+            furniture: pick('pricing.furniture', DEFAULT_PRICING.services.furniture)
+          },
+          whitegoodsTypes: {
+            standard: pick('pricing.whitegoods.standard', DEFAULT_PRICING.whitegoodsTypes.standard),
+            complex:  pick('pricing.whitegoods.complex',  DEFAULT_PRICING.whitegoodsTypes.complex)
+          },
+          travel: {
+            metro: pick('pricing.travel.metro', DEFAULT_PRICING.travel.metro),
+            outer: pick('pricing.travel.outer', DEFAULT_PRICING.travel.outer),
+            hills: pick('pricing.travel.hills', DEFAULT_PRICING.travel.hills)
+          },
+          complexity: {
+            cable_inwall:     pick('pricing.extra.cable_inwall',     DEFAULT_PRICING.complexity.cable_inwall),
+            cable_trunking:   pick('pricing.extra.cable_trunking',   DEFAULT_PRICING.complexity.cable_trunking),
+            ceiling_access:   pick('pricing.extra.ceiling_access',   DEFAULT_PRICING.complexity.ceiling_access),
+            starlink_upgrade: pick('pricing.extra.starlink_upgrade', DEFAULT_PRICING.complexity.starlink_upgrade)
+          },
+          addons: {
+            packaging: pick('pricing.extra.packaging', DEFAULT_PRICING.addons.packaging)
+          },
+          urgency: {
+            standard: pick('pricing.urgency.standard', DEFAULT_PRICING.urgency.standard),
+            priority: pick('pricing.urgency.priority', DEFAULT_PRICING.urgency.priority)
+          },
+          multiDiscount: typeof m['pricing.multiDiscount'] === 'number'
+            ? m['pricing.multiDiscount']
+            : DEFAULT_PRICING.multiDiscount
+        };
+      } catch {
+        // API unavailable — DEFAULT_PRICING already active, calculator continues normally.
+      }
+    }
+
+    const COVERAGE = {
+      metro: ['5000', '5006', '5007', '5008', '5031', '5032', '5061', '5063', '5065', '5081'],
+      outer: ['5045', '5048', '5049', '5050', '5095', '5097', '5108', '5112', '5125'],
+      hills: ['5152', '5153', '5154', '5245', '5251', '5252']
+    };
+
+    function selectedRadio(name, fallback) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : fallback;
+    }
+
+    function quantity(id) {
+      const el = document.getElementById(id);
+      if (!el) return 0;
+      const value = parseInt(el.value, 10);
+      return Number.isFinite(value) && value > 0 ? value : 0;
+    }
+
+    function addQuantityLine(lineItems, data, qty) {
+      if (qty <= 0) return 0;
+      lineItems.push({
+        label: qty > 1 ? `${data.label} x ${qty}` : data.label,
+        price: data.price * qty,
+        unitPrice: data.price,
+        qty
+      });
+      return qty;
+    }
+
+    function getCoverageStatus() {
+      const postcode = document.getElementById('customer-postcode').value.trim();
+      if (!postcode) {
+        return { status: 'neutral', label: 'Enter a postcode to check Adelaide service coverage.', postcode: '' };
+      }
+      if (!/^\d{4}$/.test(postcode)) {
+        return { status: 'warning', label: 'Postcode should be 4 digits. You can still estimate while you check it.', postcode };
+      }
+      if (Object.values(COVERAGE).some((list) => list.includes(postcode))) {
+        return { status: 'ok', label: `Good news - ${postcode} is in our common Adelaide coverage area.`, postcode };
+      }
+      return { status: 'warning', label: `${postcode} may need manual confirmation. Continue with a quote request and we will confirm availability.`, postcode };
+    }
+
+    function getQuoteContextLines() {
+      const postcode = document.getElementById('customer-postcode').value.trim();
+      const intent = document.getElementById('quote-intent').selectedOptions[0].textContent;
+      const propertyType = document.getElementById('property-type').value;
+      const region = document.getElementById('travel-region').selectedOptions[0].textContent;
+      const notes = document.getElementById('site-notes').value.trim();
+      const lines = [`Intent: ${intent}`, `Property: ${propertyType}`, `Region: ${region}`];
+      if (postcode) lines.unshift(`Postcode: ${postcode}`);
+      if (notes) lines.push(`Access notes: ${notes}`);
+      return lines;
+    }
+
+    function calculateTotal() {
+      const lineItems = [];
+      let paidItemCount = 0;
+
+      if (document.getElementById('svc-tv').checked) {
+        paidItemCount += addQuantityLine(lineItems, PRICING.tvSizes.small, quantity('tv-small-qty'));
+        paidItemCount += addQuantityLine(lineItems, PRICING.tvSizes.medium, quantity('tv-medium-qty'));
+        paidItemCount += addQuantityLine(lineItems, PRICING.tvSizes.large, quantity('tv-large-qty'));
+      }
+      if (document.getElementById('svc-antenna').checked) {
+        paidItemCount += addQuantityLine(lineItems, PRICING.services.antenna, quantity('antenna-qty'));
+      }
+      if (document.getElementById('svc-security').checked) {
+        paidItemCount += addQuantityLine(lineItems, PRICING.services.security, quantity('security-qty'));
+      }
+      if (document.getElementById('svc-whitegoods').checked) {
+        paidItemCount += addQuantityLine(lineItems, PRICING.whitegoodsTypes.standard, quantity('wg-standard-qty'));
+        paidItemCount += addQuantityLine(lineItems, PRICING.whitegoodsTypes.complex, quantity('wg-complex-qty'));
+      }
+      if (document.getElementById('svc-furniture').checked) {
+        paidItemCount += addQuantityLine(lineItems, PRICING.services.furniture, quantity('furniture-qty'));
+      }
+
+      const travel = PRICING.travel[document.getElementById('travel-region').value];
+      if (travel.price > 0) lineItems.push(travel);
+
+      ['cable_inwall', 'cable_trunking', 'ceiling_access', 'starlink_upgrade'].forEach((key) => {
+        if (document.getElementById(`complex-${key}`).checked) lineItems.push(PRICING.complexity[key]);
+      });
+
+      if (document.getElementById('addon-packaging').checked) lineItems.push(PRICING.addons.packaging);
+
+      const urgency = PRICING.urgency[selectedRadio('urgency', 'standard')];
+      if (urgency.price > 0) lineItems.push(urgency);
+
+      const subtotal = lineItems.reduce((sum, item) => sum + item.price, 0);
+      const discount = paidItemCount >= 2 ? PRICING.multiDiscount : 0;
+      return { lineItems, subtotal, discount, paidItemCount, total: Math.max(0, subtotal - discount) };
+    }
+
+    function updateConditionals() {
+      document.getElementById('tv-options').classList.toggle('visible', document.getElementById('svc-tv').checked);
+      document.getElementById('antenna-options').classList.toggle('visible', document.getElementById('svc-antenna').checked);
+      document.getElementById('security-options').classList.toggle('visible', document.getElementById('svc-security').checked);
+      document.getElementById('wg-options').classList.toggle('visible', document.getElementById('svc-whitegoods').checked);
+      document.getElementById('furniture-options').classList.toggle('visible', document.getElementById('svc-furniture').checked);
+    }
+
+    function updateCoverage() {
+      const result = getCoverageStatus();
+      const message = document.getElementById('coverage-message');
+      message.textContent = result.label;
+      message.className = `coverage-message ${result.status}`;
+    }
+
+    function updateQuoteContext() {
+      const context = document.getElementById('quote-context');
+      const lines = getQuoteContextLines();
+      context.innerHTML = lines.map((line) => `<span>${line}</span>`).join('');
+    }
+
+    function updateReceipt() {
+      const result = calculateTotal();
+      const items = document.getElementById('receipt-items');
+      const discountBanner = document.getElementById('discount-banner');
+      const totalEl = document.getElementById('receipt-total');
+      const mobileTotal = document.getElementById('mobile-total');
+      const bubble = document.getElementById('sticky-bubble');
+      const intent = document.getElementById('quote-intent').value;
+
+      if (!result.lineItems.length) {
+        items.innerHTML = '<p style="color:var(--muted); margin:0">Select a service to start.</p>';
+      } else {
+        items.innerHTML = result.lineItems.map((item) => `<div class="receipt-line"><span>${item.label}${item.qty > 1 ? ` <small>($${item.unitPrice} each)</small>` : ''}</span><strong>$${item.price}</strong></div>`).join('');
+      }
+
+      discountBanner.classList.toggle('visible', result.discount > 0);
+      totalEl.textContent = `$${result.total}`;
+      mobileTotal.textContent = result.total;
+      bubble.classList.toggle('visible', result.total > 0);
+      document.getElementById('lock-in-desktop').innerHTML = intent === 'quote'
+        ? '<i class="fa-solid fa-paper-plane"></i> Send Quote Request'
+        : '<i class="fa-solid fa-lock"></i> Lock In This Price';
+      document.getElementById('quote-only-desktop').style.display = intent === 'booking' ? 'inline-flex' : 'none';
+      updateCoverage();
+      updateQuoteContext();
+      updateLockInLinks(result);
+    }
+
+    function updateLockInLinks(result) {
+      const context = getQuoteContextLines().map((line) => `- ${line}`).join('\n');
+      const summary = (context ? `JOB BASICS\n${context}\n\nSERVICE ESTIMATE\n` : '')
+        + result.lineItems.map((item) => `- ${item.label}: $${item.price}`).join('\n')
+        + (result.discount > 0 ? `\n- Multi-service discount: -$${result.discount}` : '');
+      const url = result.total > 0
+        ? `book.html?summary=${encodeURIComponent(summary)}&total=${result.total}`
+        : 'book.html';
+      document.querySelectorAll('#lock-in-desktop, #lock-in-mobile, #quote-only-desktop').forEach((link) => link.href = url);
+    }
+
+    function preselectFromUrl() {
+      const service = new URLSearchParams(window.location.search).get('service');
+      const map = { tv: 'svc-tv', av: 'svc-tv', antenna: 'svc-antenna', security: 'svc-security', whitegoods: 'svc-whitegoods', furniture: 'svc-furniture' };
+      if (service && map[service]) document.getElementById(map[service]).checked = true;
+    }
+
+    const toggle = document.getElementById('menu-toggle');
+    const links = document.getElementById('nav-links');
+    toggle.addEventListener('click', () => {
+      links.classList.toggle('open');
+      document.body.classList.toggle('menu-open');
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await fetchPricing();
+      preselectFromUrl();
+      updateConditionals();
+      updateReceipt();
+      document.querySelectorAll('input, select').forEach((el) => {
+        el.addEventListener('input', () => {
+          updateConditionals();
+          updateReceipt();
+        });
+        el.addEventListener('change', () => {
+          updateConditionals();
+          updateReceipt();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
