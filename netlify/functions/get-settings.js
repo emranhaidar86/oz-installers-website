@@ -42,7 +42,7 @@ exports.handler = async (event) => {
     }
     return {
       statusCode: 200,
-      headers: { ...cors, 'Cache-Control': 'public, s-maxage=60' },
+      headers: { ...cors, 'Cache-Control': 'no-store' },
       body: JSON.stringify({ data })
     };
   }
@@ -58,7 +58,7 @@ exports.handler = async (event) => {
 
   return {
     statusCode: 200,
-    headers: { ...cors, 'Cache-Control': 'public, s-maxage=60' },
+    headers: { ...cors, 'Cache-Control': 'no-store' },
     body: JSON.stringify({ data })
   };
 };
