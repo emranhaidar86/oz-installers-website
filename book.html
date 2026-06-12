@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Book an Oz Installers technician online for TV mounting, Starlink, smart security, appliances, and assembly in Adelaide." />
+  <meta name="description" content="Book an Oz Installers technician in Adelaide — TV mounting, Starlink, CCTV, appliances, and furniture assembly. Postcode-first, live estimate." />
   <title>Book Now | Oz Installers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,102 +11,232 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="custom.css" />
   <style>
-    .page-hero {
-      --page-image: url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=85");
+    /* ── Page hero ── */
+    .page-hero { --page-image: url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=85"); }
+
+    /* ── Booking layout ── */
+    .booking-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) 360px;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .booking-wrap { grid-template-columns: 1fr; }
+      .est-col { order: -1; }
     }
 
-    /* Progress stepper redesign */
-    .progress-bar {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: 28px;
-      padding: 20px 26px;
+    /* ── Book cards (phase sections) ── */
+    .book-card {
+      background: var(--panel);
       border: 1px solid var(--line);
       border-radius: var(--r);
-      background: white;
-      box-shadow: var(--shadow-sm);
+      padding: 28px 32px;
+      box-shadow: 0 2px 12px rgba(14,19,24,.05);
+      margin-bottom: 16px;
+      transition: opacity .35s ease, transform .35s cubic-bezier(.16,1,.3,1);
+    }
+    .book-card.phase-hidden { display: none; }
+    .book-card.phase-reveal { animation: phaseIn .4s cubic-bezier(.16,1,.3,1); }
+    @keyframes phaseIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .book-card h2 { font-size: 1.45rem; margin: 6px 0 5px; }
+    .book-card > p { color: var(--muted); margin-bottom: 22px; font-size: .93rem; }
+
+    /* ── Postcode ── */
+    .postcode-row { display: flex; gap: 12px; align-items: flex-end; }
+    .postcode-row .field-label { flex: 1; margin-bottom: 0; }
+    .postcode-row .btn { flex-shrink: 0; height: 46px; padding: 0 22px; }
+    .coverage-msg {
+      margin-top: 12px; padding: 12px 16px; border-radius: var(--r-sm);
+      font-size: .88rem; font-weight: 700; display: none; gap: 10px; align-items: center;
+    }
+    .coverage-msg.show { display: flex; }
+    .coverage-msg.ok   { background: rgba(22,132,93,.1);  color: #16845d; border: 1px solid rgba(22,132,93,.25); }
+    .coverage-msg.warn { background: rgba(180,120,0,.1);  color: #a87d00; border: 1px solid rgba(180,120,0,.2); }
+    .coverage-msg.err  { background: rgba(200,40,40,.08); color: #c62828; border: 1px solid rgba(200,40,40,.2); }
+
+    /* ── Service selection grid ── */
+    .svc-pick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px; }
+    @media (max-width: 600px) { .svc-pick-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .svc-pick-card {
+      position: relative; border: 2px solid var(--line); border-radius: var(--r);
+      padding: 18px 14px 16px; cursor: pointer;
+      transition: border-color .18s, background .18s, box-shadow .18s;
+      text-align: center; background: var(--paper);
+    }
+    .svc-pick-card:hover { border-color: var(--brand); background: rgba(0,124,137,.04); }
+    .svc-pick-card input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .svc-pick-card.selected { border-color: var(--brand); background: rgba(0,124,137,.07); box-shadow: 0 0 0 3px rgba(0,124,137,.12); }
+    .svc-pick-card .svc-ico {
+      width: 48px; height: 48px; background: var(--night2); color: var(--cyan);
+      border-radius: 12px; display: grid; place-items: center; font-size: 1.25rem;
+      margin: 0 auto 12px; transition: background .18s;
+    }
+    .svc-pick-card.selected .svc-ico { background: var(--brand); color: #fff; }
+    .svc-pick-card .svc-pick-name { font-weight: 800; font-size: .88rem; color: var(--ink); line-height: 1.3; }
+    .svc-pick-card .svc-pick-from { font-size: .78rem; color: var(--muted); margin-top: 4px; }
+    .svc-pick-tick { position: absolute; top: 8px; right: 10px; font-size: .78rem; color: var(--brand); opacity: 0; transition: opacity .18s; }
+    .svc-pick-card.selected .svc-pick-tick { opacity: 1; }
+
+    /* ── Service detail header ── */
+    .svc-detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .svc-detail-ico {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--night2); color: var(--cyan);
+      display: grid; place-items: center; font-size: 1rem; flex-shrink: 0;
     }
 
-    .prog-step {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
+    /* ── Option pills ── */
+    .opt-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .opt-pill {
+      display: flex; align-items: center; gap: 7px; padding: 8px 16px;
+      border-radius: 999px; border: 1.5px solid var(--line); background: var(--paper);
+      cursor: pointer; font-size: .86rem; font-weight: 700; color: var(--body-text);
+      transition: border-color .15s, background .15s, color .15s;
     }
+    .opt-pill input { display: none; }
+    .opt-pill:hover { border-color: var(--brand); color: var(--brand); }
+    .opt-pill.selected { border-color: var(--brand); background: rgba(0,124,137,.09); color: var(--brand); }
 
-    .prog-dot {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-      font-size: .88rem;
-      border: 2px solid var(--line);
-      color: var(--muted);
-      background: white;
-      flex-shrink: 0;
-      transition: background .25s, color .25s, border-color .25s, box-shadow .25s;
+    /* ── CCTV packages ── */
+    .cam-pkg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+    .cam-pkg-card {
+      border: 1.5px solid var(--line); border-radius: var(--r-sm); padding: 14px 16px;
+      cursor: pointer; background: var(--paper); transition: border-color .15s, background .15s;
     }
+    .cam-pkg-card.selected { border-color: var(--brand); background: rgba(0,124,137,.06); }
+    .cam-pkg-card input { display: none; }
+    .cam-pkg-card .pkg-title { font-weight: 800; font-size: .92rem; color: var(--ink); }
+    .cam-pkg-card .pkg-desc  { font-size: .78rem; color: var(--muted); margin-top: 3px; }
+    .cam-pkg-card .pkg-price { font-size: .92rem; font-weight: 900; color: var(--brand); margin-top: 8px; }
 
-    .prog-dot.active {
-      background: var(--brand);
-      color: white;
-      border-color: var(--brand);
-      box-shadow: 0 6px 18px rgba(0,124,137,.28);
+    /* ── Scope block ── */
+    .scope-block {
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: var(--r-sm); padding: 16px 18px; margin: 14px 0 0;
     }
+    .scope-block h4 { font-size: .88rem; font-weight: 800; color: var(--ink); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+    .scope-block h4 i { color: var(--brand); }
+    .scope-block ul  { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+    .scope-block li  { font-size: .83rem; color: var(--body-text); display: flex; align-items: flex-start; gap: 8px; }
+    .scope-block li i { color: var(--green); margin-top: 2px; flex-shrink: 0; font-size: .75rem; }
 
-    .prog-dot.done {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
+    /* ── Add-on section title ── */
+    .addon-section-title {
+      font-size: .78rem; font-weight: 900; color: var(--muted); letter-spacing: .07em;
+      text-transform: uppercase; margin: 18px 0 10px;
     }
+    .addon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+    @media (max-width: 540px) { .addon-grid { grid-template-columns: 1fr; } }
 
-    .prog-label { font-size: .88rem; font-weight: 800; color: var(--muted); transition: color .2s; }
-    .prog-step.is-active .prog-label { color: var(--brand); }
-    .prog-step.is-done .prog-label   { color: var(--green); }
-
-    .prog-line { height: 2px; width: 40px; background: var(--line); border-radius: 2px; flex-shrink: 0; }
-    .prog-line.done { background: var(--green); }
-
-    /* Form card upgrade */
-    .form-card {
-      border-radius: var(--r);
-      padding: 32px;
-      box-shadow: var(--shadow-sm);
+    .addon-card {
+      border: 1.5px solid var(--line); border-radius: var(--r-sm); padding: 13px 14px;
+      cursor: pointer; background: var(--paper);
+      transition: border-color .15s, background .15s, box-shadow .15s;
+      display: flex; align-items: flex-start; gap: 11px;
     }
-
-    .form-card h2 { font-size: 1.7rem; margin: 8px 0 6px; }
-    .form-card > p { color: var(--muted); margin-bottom: 24px; }
-
-    /* Textarea */
-    textarea.input-field { resize: vertical; min-height: 140px; }
-
-    /* Info card icons */
-    .info-card-head {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 10px;
+    .addon-card:hover { border-color: var(--brand); background: rgba(0,124,137,.04); }
+    .addon-card.selected { border-color: var(--brand); background: rgba(0,124,137,.07); box-shadow: 0 0 0 2px rgba(0,124,137,.12); }
+    .addon-card input { display: none; }
+    .addon-ico {
+      width: 34px; height: 34px; border-radius: 8px; background: var(--night2); color: var(--cyan);
+      display: grid; place-items: center; font-size: .85rem; flex-shrink: 0; transition: background .15s;
     }
+    .addon-card.selected .addon-ico { background: var(--brand); color: #fff; }
+    .addon-body { flex: 1; min-width: 0; }
+    .addon-name   { font-weight: 800; font-size: .85rem; color: var(--ink); line-height: 1.3; }
+    .addon-price  { font-size: .8rem; color: var(--brand); font-weight: 700; margin-top: 2px; }
+    .addon-market { font-size: .73rem; color: var(--muted); margin-top: 1px; }
+    .addon-tick   { margin-left: auto; color: var(--brand); font-size: .75rem; opacity: 0; padding-top: 2px; flex-shrink: 0; transition: opacity .15s; }
+    .addon-card.selected .addon-tick { opacity: 1; }
 
-    .info-ico {
-      width: 44px; height: 44px;
-      border-radius: 9px;
-      display: grid;
-      place-items: center;
-      background: rgba(0,124,137,.1);
-      color: var(--brand);
-      font-size: 1.1rem;
-      flex-shrink: 0;
+    /* ── Contact grid ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 540px) { .contact-grid { grid-template-columns: 1fr; } }
+    .field-full { grid-column: 1 / -1; }
+    .field-label { display: block; }
+    .field-label .lbl { font-size: .85rem; font-weight: 800; color: var(--ink); display: block; margin-bottom: 6px; }
+    .input-field { height: 46px; }
+    textarea.input-field { height: auto; min-height: 110px; resize: vertical; }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: .78rem; font-weight: 900; text-transform: uppercase;
+      letter-spacing: .09em; color: var(--muted); margin: 18px 0 10px;
+      display: flex; align-items: center; gap: 8px;
     }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 
-    .info-card h3 { font-size: 1rem; margin-bottom: 5px; }
-    .info-card p  { color: var(--muted); font-size: .87rem; }
+    /* ── Submit row ── */
+    .submit-row { display: flex; justify-content: flex-end; margin-top: 4px; }
+    .submit-row .btn { padding: 14px 28px; font-size: .96rem; }
+
+    /* ── Estimate sidebar ── */
+    .est-col { position: sticky; top: 92px; }
+    .estimate-dark {
+      background: #0f1620; border-radius: var(--r);
+      overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.35);
+    }
+    .est-header {
+      background: linear-gradient(135deg, #141c2e 0%, #0f1620 100%);
+      padding: 20px 22px 18px; border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .est-header h3 { color: #fff; font-size: 1rem; margin: 0 0 4px; display: flex; align-items: center; gap: 9px; }
+    .est-header h3 i { color: var(--cyan); }
+    .est-header p { color: rgba(255,255,255,.45); font-size: .8rem; margin: 0; }
+    .est-body { padding: 18px 22px; }
+    .est-items { display: flex; flex-direction: column; gap: 0; margin-bottom: 14px; min-height: 48px; }
+    .est-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 8px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.05);
+      animation: estIn .3s ease;
+    }
+    @keyframes estIn { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:none; } }
+    .est-item:last-child { border-bottom: none; }
+    .est-item-label { font-size: .83rem; color: rgba(255,255,255,.65); flex: 1; line-height: 1.4; }
+    .est-item-price { font-size: .88rem; font-weight: 800; color: rgba(255,255,255,.85); flex-shrink: 0; }
+    .est-item.addon .est-item-label { color: var(--cyan); opacity: .85; }
+    .est-item.discount .est-item-price { color: #5bdf9c; }
+    .est-empty { text-align: center; padding: 20px 0; color: rgba(255,255,255,.3); font-size: .82rem; }
+    .est-empty i { font-size: 1.5rem; display: block; margin-bottom: 6px; opacity: .5; }
+    .est-divider { border: none; border-top: 1px solid rgba(255,255,255,.1); margin: 14px 0; }
+    .est-total-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 6px; }
+    .est-total-label { color: rgba(255,255,255,.5); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 800; }
+    .est-total-amount { color: var(--cyan); font-size: 2rem; font-weight: 900; letter-spacing: -.02em; }
+    .est-note { font-size: .76rem; color: rgba(255,255,255,.3); margin-top: 4px; margin-bottom: 14px; line-height: 1.5; }
+    .est-footer { background: rgba(0,0,0,.25); padding: 16px 22px; border-top: 1px solid rgba(255,255,255,.06); }
+    .est-footer .btn-primary { width: 100%; justify-content: center; background: var(--brand); color: #fff; padding: 14px 20px; font-size: .95rem; }
+    .est-footer .btn-primary:hover { background: var(--brand-dark); }
+    .est-trust { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .est-trust-item { display: flex; align-items: center; gap: 5px; font-size: .72rem; color: rgba(255,255,255,.35); }
+    .est-trust-item i { color: rgba(77,217,230,.4); font-size: .7rem; }
+    .est-discount-badge {
+      background: rgba(91,223,156,.12); border: 1px solid rgba(91,223,156,.25);
+      border-radius: var(--r-sm); padding: 8px 12px; margin-bottom: 10px;
+      font-size: .78rem; color: #5bdf9c; display: none; align-items: center; gap: 7px;
+    }
+    .est-discount-badge.show { display: flex; }
+
+    /* ── Mobile estimate bar ── */
+    .mobile-est-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      background: #0f1620; padding: 12px 20px; z-index: 90;
+      align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(77,217,230,.2); box-shadow: 0 -4px 20px rgba(0,0,0,.4);
+    }
+    @media (max-width: 960px) { .mobile-est-bar { display: flex; } }
+    .mob-est-label { font-size: .78rem; color: rgba(255,255,255,.5); }
+    .mob-est-total { font-size: 1.3rem; font-weight: 900; color: var(--cyan); }
+    .mob-est-btn   { padding: 10px 18px; font-size: .85rem; }
   </style>
 </head>
 <body>
 
+  <!-- ── Header ─────────────────────────────────────────── -->
   <header class="site-header" id="site-header">
     <div class="nav-wrap">
       <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a>
@@ -124,188 +254,715 @@
   <section class="page-hero">
     <div class="container">
       <span class="hero-kicker"><i class="fa-solid fa-calendar-check"></i> Book Online</span>
-      <h1>Tell us the job.<br>We handle the install.</h1>
-      <p>Send through your details, suburb, preferred date, and job notes. If you came from the calculator, your estimate is already attached.</p>
+      <h1>Tell us the job.<br>We handle the rest.</h1>
+      <p>Enter your postcode, pick your service, and get a live estimate before you confirm. A technician reaches out the same business day.</p>
     </div>
   </section>
 
+  <!-- ── Main ──────────────────────────────────────────── -->
   <main class="section">
-    <div class="container booking-layout">
+    <div class="container">
+      <div class="booking-wrap">
 
-      <!-- ── Form ──────────────────────────────────────── -->
-      <div class="booking-panel">
+        <!-- ── FORM COLUMN ──────────────────────────────── -->
+        <div class="form-col">
 
-        <!-- Progress bar -->
-        <div class="progress-bar" id="progress-bar" aria-label="Booking progress">
-          <div class="prog-step is-active" id="prog-step-1">
-            <div class="prog-dot active" id="prog-dot-1">1</div>
-            <span class="prog-label">Your details</span>
+          <!-- ─ Phase 0: Postcode ─ -->
+          <div class="book-card" id="phase-postcode">
+            <span class="eyebrow"><i class="fa-solid fa-map-pin"></i> Step 1 — Coverage Check</span>
+            <h2>Where are you located?</h2>
+            <p>We service Greater Adelaide and surrounding Hills. Enter your postcode to check coverage.</p>
+            <div class="postcode-row">
+              <label class="field-label">
+                <span class="lbl">Your postcode</span>
+                <input class="input-field" id="postcode-input" type="text" maxlength="4" placeholder="e.g. 5000" inputmode="numeric" autocomplete="postal-code" />
+              </label>
+              <button class="btn btn-primary" type="button" id="check-pc-btn">Check Coverage</button>
+            </div>
+            <div class="coverage-msg" id="coverage-msg">
+              <i id="coverage-icon" class="fa-solid fa-circle-check"></i>
+              <span id="coverage-text"></span>
+            </div>
           </div>
-          <div class="prog-line" id="prog-line"></div>
-          <div class="prog-step" id="prog-step-2">
-            <div class="prog-dot" id="prog-dot-2">2</div>
-            <span class="prog-label">Job details</span>
+
+          <!-- ─ Phase 1: Service Selection ─ -->
+          <div class="book-card phase-hidden" id="phase-service">
+            <span class="eyebrow"><i class="fa-solid fa-screwdriver-wrench"></i> Step 2 — Select Service</span>
+            <h2>What do you need done?</h2>
+            <p>Select one or more services. Combining two or more automatically applies a multi-service discount.</p>
+            <div class="svc-pick-grid">
+
+              <label class="svc-pick-card" data-svc="tv" onclick="toggleSvc('tv',this)">
+                <input type="checkbox" value="tv" />
+                <i class="fa-solid fa-check svc-pick-tick"></i>
+                <div class="svc-ico"><i class="fa-solid fa-tv"></i></div>
+                <div class="svc-pick-name">TV Wall Mount</div>
+                <div class="svc-pick-from">From $120</div>
+              </label>
+
+              <label class="svc-pick-card" data-svc="antenna" onclick="toggleSvc('antenna',this)">
+                <input type="checkbox" value="antenna" />
+                <i class="fa-solid fa-check svc-pick-tick"></i>
+                <div class="svc-ico"><i class="fa-solid fa-satellite-dish"></i></div>
+                <div class="svc-pick-name">Antenna / Starlink</div>
+                <div class="svc-pick-from">From $160</div>
+              </label>
+
+              <label class="svc-pick-card" data-svc="cctv" onclick="toggleSvc('cctv',this)">
+                <input type="checkbox" value="cctv" />
+                <i class="fa-solid fa-check svc-pick-tick"></i>
+                <div class="svc-ico"><i class="fa-solid fa-camera"></i></div>
+                <div class="svc-pick-name">CCTV Camera</div>
+                <div class="svc-pick-from">From $180</div>
+              </label>
+
+              <label class="svc-pick-card" data-svc="doorbell" onclick="toggleSvc('doorbell',this)">
+                <input type="checkbox" value="doorbell" />
+                <i class="fa-solid fa-check svc-pick-tick"></i>
+                <div class="svc-ico"><i class="fa-solid fa-bell"></i></div>
+                <div class="svc-pick-name">Video Doorbell</div>
+                <div class="svc-pick-from">From $180</div>
+              </label>
+
+              <label class="svc-pick-card" data-svc="whitegoods" onclick="toggleSvc('whitegoods',this)">
+                <input type="checkbox" value="whitegoods" />
+                <i class="fa-solid fa-check svc-pick-tick"></i>
+                <div class="svc-ico"><i class="fa-solid fa-blender"></i></div>
+                <div class="svc-pick-name">White Goods</div>
+                <div class="svc-pick-from">From $130</div>
+              </label>
+
+              <label class="svc-pick-card" data-svc="furniture" onclick="toggleSvc('furniture',this)">
+                <input type="checkbox" value="furniture" />
+                <i class="fa-solid fa-check svc-pick-tick"></i>
+                <div class="svc-ico"><i class="fa-solid fa-couch"></i></div>
+                <div class="svc-pick-name">Furniture Assembly</div>
+                <div class="svc-pick-from">From $110</div>
+              </label>
+
+            </div>
           </div>
-        </div>
 
-        <div id="price-banner" class="price-banner">
-          <i class="fa-solid fa-tag"></i> Estimate attached: <strong><span id="price-amount">$0</span></strong>
-        </div>
+          <!-- ─ TV Details ─ -->
+          <div class="book-card phase-hidden svc-detail" id="phase-tv">
+            <div class="svc-detail-header">
+              <div class="svc-detail-ico"><i class="fa-solid fa-tv"></i></div>
+              <div>
+                <span class="eyebrow" style="margin:0 0 2px;">TV Wall Mount</span>
+                <h2 style="margin:0;font-size:1.25rem;">Tell us about your TV</h2>
+              </div>
+            </div>
 
-        <form id="booking-form" novalidate>
+            <p class="section-label">Screen Size</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('tv-size','small',this)">
+                <input type="radio" name="tv-size" value="small" checked />42" – 55"<span style="opacity:.6;font-weight:600;margin-left:6px;">$120</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('tv-size','medium',this)">
+                <input type="radio" name="tv-size" value="medium" />60" – 70"<span style="opacity:.6;font-weight:600;margin-left:6px;">$150</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('tv-size','large',this)">
+                <input type="radio" name="tv-size" value="large" />75" – 85"<span style="opacity:.6;font-weight:600;margin-left:6px;">$150</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('tv-size','xlarge',this)">
+                <input type="radio" name="tv-size" value="xlarge" />98" – 100"<span style="opacity:.6;font-weight:600;margin-left:6px;">$200</span>
+              </label>
+            </div>
 
-          <!-- Step 1 -->
-          <section class="form-step" id="form-step-1">
-            <div class="form-card">
-              <span class="eyebrow">Step 1 of 2</span>
-              <h2>Your details</h2>
-              <p>We use these to confirm the booking and send technician updates.</p>
-              <div class="form-grid">
-                <label class="field-label">Full name
-                  <input class="input-field" id="full-name" autocomplete="name" placeholder="Sarah Thompson" />
-                  <span class="field-error-text" id="full-name-error">Please enter your full name.</span>
+            <p class="section-label">Bracket Type</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('tv-mount','fixed',this)">
+                <input type="radio" name="tv-mount" value="fixed" checked /><i class="fa-solid fa-minus"></i> Fixed<span style="opacity:.6;font-weight:600;margin-left:6px;">incl.</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('tv-mount','tilt',this)">
+                <input type="radio" name="tv-mount" value="tilt" /><i class="fa-solid fa-angles-down"></i> Tilt<span style="opacity:.6;font-weight:600;margin-left:6px;">+$10</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('tv-mount','motion',this)">
+                <input type="radio" name="tv-mount" value="motion" /><i class="fa-solid fa-rotate"></i> Full Motion<span style="opacity:.6;font-weight:600;margin-left:6px;">+$25</span>
+              </label>
+            </div>
+
+            <p class="section-label">Wall Surface</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('tv-wall','plaster',this)">
+                <input type="radio" name="tv-wall" value="plaster" checked />Plasterboard<span style="opacity:.6;font-weight:600;margin-left:6px;">incl.</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('tv-wall','brick',this)">
+                <input type="radio" name="tv-wall" value="brick" />Brick / Masonry<span style="opacity:.6;font-weight:600;margin-left:6px;">+$20</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('tv-wall','timber',this)">
+                <input type="radio" name="tv-wall" value="timber" />Timber / Feature Wall<span style="opacity:.6;font-weight:600;margin-left:6px;">incl.</span>
+              </label>
+            </div>
+
+            <div class="scope-block">
+              <h4><i class="fa-solid fa-circle-check"></i> Included in every TV mount</h4>
+              <ul>
+                <li><i class="fa-solid fa-check"></i> Stud or masonry anchor assessment before any drilling</li>
+                <li><i class="fa-solid fa-check"></i> Bracket installation, level check, and TV hang with full safety test</li>
+                <li><i class="fa-solid fa-check"></i> HDMI and power cable routing, picture quality check, and handover</li>
+                <li><i class="fa-solid fa-check"></i> Paintwork and surface fully protected throughout the job</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- ─ Antenna / Starlink Details ─ -->
+          <div class="book-card phase-hidden svc-detail" id="phase-antenna">
+            <div class="svc-detail-header">
+              <div class="svc-detail-ico"><i class="fa-solid fa-satellite-dish"></i></div>
+              <div>
+                <span class="eyebrow" style="margin:0 0 2px;">Antenna / Starlink</span>
+                <h2 style="margin:0;font-size:1.25rem;">Signal setup details</h2>
+              </div>
+            </div>
+
+            <p class="section-label">Service Type</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('ant-type','digital',this)">
+                <input type="radio" name="ant-type" value="digital" checked /><i class="fa-solid fa-broadcast-tower"></i> Digital Antenna
+              </label>
+              <label class="opt-pill" onclick="pickOpt('ant-type','starlink2',this)">
+                <input type="radio" name="ant-type" value="starlink2" /><i class="fa-solid fa-satellite"></i> Starlink Gen 2
+              </label>
+              <label class="opt-pill" onclick="pickOpt('ant-type','starlink3',this)">
+                <input type="radio" name="ant-type" value="starlink3" /><i class="fa-solid fa-satellite"></i> Starlink Gen 3
+              </label>
+            </div>
+
+            <p class="section-label">Property Storey</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('ant-storey','single',this)">
+                <input type="radio" name="ant-storey" value="single" checked /><i class="fa-solid fa-house"></i> Single Storey<span style="opacity:.6;font-weight:600;margin-left:6px;">incl.</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('ant-storey','double',this)">
+                <input type="radio" name="ant-storey" value="double" /><i class="fa-solid fa-building"></i> Double Storey<span style="opacity:.6;font-weight:600;margin-left:6px;">+$30</span>
+              </label>
+            </div>
+
+            <div class="scope-block">
+              <h4><i class="fa-solid fa-circle-check"></i> Included in every antenna / Starlink job</h4>
+              <ul>
+                <li><i class="fa-solid fa-check"></i> Roof position planning for optimal line of sight</li>
+                <li><i class="fa-solid fa-check"></i> Weatherproof mounting and sealed cable penetration</li>
+                <li><i class="fa-solid fa-check"></i> Clean ceiling-space cable run where suitable</li>
+                <li><i class="fa-solid fa-check"></i> Signal strength test, router / receiver setup, and handover</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- ─ CCTV Details ─ -->
+          <div class="book-card phase-hidden svc-detail" id="phase-cctv">
+            <div class="svc-detail-header">
+              <div class="svc-detail-ico"><i class="fa-solid fa-camera"></i></div>
+              <div>
+                <span class="eyebrow" style="margin:0 0 2px;">CCTV Camera Installation</span>
+                <h2 style="margin:0;font-size:1.25rem;">Camera system details</h2>
+              </div>
+            </div>
+
+            <p class="section-label">Property Storey</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('cctv-storey','single',this)">
+                <input type="radio" name="cctv-storey" value="single" checked /><i class="fa-solid fa-house"></i> Single Storey<span style="opacity:.6;font-weight:600;margin-left:6px;">incl.</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('cctv-storey','double',this)">
+                <input type="radio" name="cctv-storey" value="double" /><i class="fa-solid fa-building"></i> Double Storey<span style="opacity:.6;font-weight:600;margin-left:6px;">+$30</span>
+              </label>
+            </div>
+
+            <p class="section-label">Camera Supply</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('cctv-supply','customer',this);cctvSupply('customer')">
+                <input type="radio" name="cctv-supply" value="customer" checked /><i class="fa-solid fa-box-open"></i> I will supply cameras
+              </label>
+              <label class="opt-pill" onclick="pickOpt('cctv-supply','installer',this);cctvSupply('installer')">
+                <input type="radio" name="cctv-supply" value="installer" /><i class="fa-solid fa-truck"></i> Installer supplies cameras
+              </label>
+            </div>
+
+            <div id="cctv-qty-section">
+              <p class="section-label">Number of Cameras</p>
+              <div class="opt-pills">
+                <label class="opt-pill selected" onclick="pickOpt('cctv-qty','2',this)">
+                  <input type="radio" name="cctv-qty" value="2" checked />2 cameras<span style="opacity:.6;font-weight:600;margin-left:6px;">$360</span>
                 </label>
-                <label class="field-label">Phone number
-                  <input class="input-field" id="phone" autocomplete="tel" placeholder="04XX XXX XXX" />
-                  <span class="field-error-text" id="phone-error">Please enter a valid phone number.</span>
+                <label class="opt-pill" onclick="pickOpt('cctv-qty','4',this)">
+                  <input type="radio" name="cctv-qty" value="4" />4 cameras<span style="opacity:.6;font-weight:600;margin-left:6px;">$720</span>
                 </label>
-                <label class="field-label field-full">Email address
-                  <input class="input-field" id="email" type="email" autocomplete="email" placeholder="you@example.com" />
-                  <span class="field-error-text" id="email-error">Please enter a valid email address.</span>
+                <label class="opt-pill" onclick="pickOpt('cctv-qty','6',this)">
+                  <input type="radio" name="cctv-qty" value="6" />6 cameras<span style="opacity:.6;font-weight:600;margin-left:6px;">$1,080</span>
+                </label>
+                <label class="opt-pill" onclick="pickOpt('cctv-qty','8',this)">
+                  <input type="radio" name="cctv-qty" value="8" />8 cameras<span style="opacity:.6;font-weight:600;margin-left:6px;">$1,440</span>
                 </label>
               </div>
             </div>
-            <div class="action-row" style="justify-content:flex-end; margin-top:16px;">
-              <button class="btn btn-primary" type="button" id="next-btn">Continue <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-          </section>
 
-          <!-- Step 2 -->
-          <section class="form-step hidden" id="form-step-2">
-            <div class="form-card">
-              <span class="eyebrow">Step 2 of 2</span>
-              <h2>Job details</h2>
-              <p>A few practical details help us send the right technician with the right tools.</p>
-              <div class="form-grid">
-                <label class="field-label field-full">Suburb or region
-                  <select id="book-suburb" class="input-field">
-                    <option value="">Select your suburb / region</option>
-                    <optgroup label="Adelaide CBD and inner">
-                      <option>Adelaide CBD</option>
-                      <option>Norwood</option>
-                      <option>Unley</option>
-                      <option>Burnside</option>
-                      <option>Prospect</option>
-                      <option>Mitcham</option>
-                    </optgroup>
-                    <optgroup label="Southern suburbs">
-                      <option>Marion</option>
-                      <option>Brighton</option>
-                      <option>Glenelg</option>
-                      <option>Christies Beach</option>
-                      <option>Morphett Vale</option>
-                    </optgroup>
-                    <optgroup label="Northern and eastern suburbs">
-                      <option>Campbelltown</option>
-                      <option>Mawson Lakes</option>
-                      <option>Tea Tree Gully</option>
-                      <option>Salisbury</option>
-                      <option>Modbury</option>
-                    </optgroup>
-                    <optgroup label="Adelaide Hills">
-                      <option>Stirling</option>
-                      <option>Hahndorf</option>
-                      <option>Mount Barker</option>
-                      <option>Lobethal</option>
-                    </optgroup>
-                    <option>Other</option>
-                  </select>
-                  <span class="field-error-text" id="book-suburb-error">Please select your suburb or region.</span>
+            <div id="cctv-pkg-section" class="phase-hidden">
+              <p class="section-label">Choose a Camera Package</p>
+              <div class="cam-pkg-grid">
+                <label class="cam-pkg-card selected" onclick="pickOpt('cctv-pkg','pkg2',this)">
+                  <input type="radio" name="cctv-pkg" value="pkg2" checked />
+                  <div class="pkg-title"><i class="fa-solid fa-camera" style="color:var(--brand);margin-right:6px;"></i>2-Camera Package</div>
+                  <div class="pkg-desc">2× bullet cameras, mounts, cabling included</div>
+                  <div class="pkg-price">$720 all-in</div>
                 </label>
-                <label class="field-label">Preferred date
-                  <input class="input-field" id="preferred-date" type="date" />
+                <label class="cam-pkg-card" onclick="pickOpt('cctv-pkg','pkg4',this)">
+                  <input type="radio" name="cctv-pkg" value="pkg4" />
+                  <div class="pkg-title"><i class="fa-solid fa-camera" style="color:var(--brand);margin-right:6px;"></i>4-Camera Package</div>
+                  <div class="pkg-desc">4× bullet cameras, mounts, cabling included</div>
+                  <div class="pkg-price">$1,440 all-in</div>
                 </label>
-                <label class="field-label">Preferred time
-                  <select class="input-field" id="preferred-time">
-                    <option>Any time</option>
-                    <option>Morning</option>
-                    <option>Afternoon</option>
-                    <option>Priority same-day if available</option>
-                  </select>
+                <label class="cam-pkg-card" onclick="pickOpt('cctv-pkg','pkg6',this)">
+                  <input type="radio" name="cctv-pkg" value="pkg6" />
+                  <div class="pkg-title"><i class="fa-solid fa-camera" style="color:var(--brand);margin-right:6px;"></i>6-Camera Package</div>
+                  <div class="pkg-desc">6× bullet cameras, mounts, cabling included</div>
+                  <div class="pkg-price">$2,160 all-in</div>
                 </label>
-                <label class="field-label field-full">Job notes
-                  <textarea class="input-field" id="job-notes" rows="8" placeholder="Example: 65 inch TV on brick wall, soundbar under TV, please hide cables if possible."></textarea>
+                <label class="cam-pkg-card" onclick="pickOpt('cctv-pkg','custom',this)">
+                  <input type="radio" name="cctv-pkg" value="custom" />
+                  <div class="pkg-title"><i class="fa-solid fa-gear" style="color:var(--brand);margin-right:6px;"></i>Custom Setup</div>
+                  <div class="pkg-desc">Mixed indoor/outdoor or more than 6 cameras</div>
+                  <div class="pkg-price">Quote on request</div>
                 </label>
               </div>
             </div>
-            <div class="action-row" style="justify-content:space-between; margin-top:16px;">
-              <button class="btn btn-secondary" type="button" id="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
-              <button class="btn btn-primary" type="submit"><i class="fa-solid fa-calendar-check"></i> Confirm My Booking</button>
-            </div>
-          </section>
 
-        </form>
-      </div>
-
-      <!-- ── Sidebar ────────────────────────────────────── -->
-      <aside class="info-stack">
-        <div class="info-card reveal d1">
-          <div class="info-card-head">
-            <div class="info-ico"><i class="fa-solid fa-clipboard-check"></i></div>
-            <div>
-              <h3>What happens next?</h3>
-              <p>Your booking is reviewed, then a technician confirms the job details, arrival window, and any special access needs.</p>
+            <div class="scope-block">
+              <h4><i class="fa-solid fa-circle-check"></i> Every CCTV install includes</h4>
+              <ul>
+                <li><i class="fa-solid fa-check"></i> Camera placement strategy for entry points and blind spots</li>
+                <li><i class="fa-solid fa-check"></i> Secure mounting with weatherproofing on all exterior cameras</li>
+                <li><i class="fa-solid fa-check"></i> Wi-Fi or cable connection, motion zone setup, mobile app pairing</li>
+                <li><i class="fa-solid fa-check"></i> Full live-view and notification test before technician departs</li>
+              </ul>
             </div>
           </div>
-        </div>
 
-        <div class="info-card reveal d2">
-          <div class="info-card-head">
-            <div class="info-ico"><i class="fa-solid fa-shield-halved"></i></div>
-            <div>
-              <h3>Covered on every job</h3>
-              <p>$10M public liability insurance, careful surface protection, and a tidy finish before handover.</p>
+          <!-- ─ Doorbell Details ─ -->
+          <div class="book-card phase-hidden svc-detail" id="phase-doorbell">
+            <div class="svc-detail-header">
+              <div class="svc-detail-ico"><i class="fa-solid fa-bell"></i></div>
+              <div>
+                <span class="eyebrow" style="margin:0 0 2px;">Video Doorbell</span>
+                <h2 style="margin:0;font-size:1.25rem;">Doorbell install details</h2>
+              </div>
+            </div>
+
+            <p class="section-label">Brand / Model</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('db-brand','ring',this)">
+                <input type="radio" name="db-brand" value="ring" checked />Ring
+              </label>
+              <label class="opt-pill" onclick="pickOpt('db-brand','nest',this)">
+                <input type="radio" name="db-brand" value="nest" />Google Nest
+              </label>
+              <label class="opt-pill" onclick="pickOpt('db-brand','eufy',this)">
+                <input type="radio" name="db-brand" value="eufy" />Eufy
+              </label>
+              <label class="opt-pill" onclick="pickOpt('db-brand','other',this)">
+                <input type="radio" name="db-brand" value="other" />Other
+              </label>
+            </div>
+
+            <div class="scope-block">
+              <h4><i class="fa-solid fa-circle-check"></i> Doorbell install includes</h4>
+              <ul>
+                <li><i class="fa-solid fa-check"></i> Wired or battery-powered mounting at door frame</li>
+                <li><i class="fa-solid fa-check"></i> App setup, Wi-Fi pairing, and motion zone calibration</li>
+                <li><i class="fa-solid fa-check"></i> Live-view and alert test before handover</li>
+              </ul>
             </div>
           </div>
-        </div>
 
-        <div class="info-card reveal d3">
-          <div class="info-card-head">
-            <div class="info-ico"><i class="fa-solid fa-phone"></i></div>
-            <div>
-              <h3>Prefer to call?</h3>
-              <p>Use the form for fastest routing, or call during business hours for urgent jobs.</p>
+          <!-- ─ White Goods Details ─ -->
+          <div class="book-card phase-hidden svc-detail" id="phase-whitegoods">
+            <div class="svc-detail-header">
+              <div class="svc-detail-ico"><i class="fa-solid fa-blender"></i></div>
+              <div>
+                <span class="eyebrow" style="margin:0 0 2px;">White Goods Installation</span>
+                <h2 style="margin:0;font-size:1.25rem;">Appliance details</h2>
+              </div>
+            </div>
+
+            <p class="section-label">Appliance Type</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('wg-type','dishwasher',this)">
+                <input type="radio" name="wg-type" value="dishwasher" checked />Dishwasher<span style="opacity:.6;font-weight:600;margin-left:6px;">$130</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('wg-type','washer',this)">
+                <input type="radio" name="wg-type" value="washer" />Washing Machine<span style="opacity:.6;font-weight:600;margin-left:6px;">$130</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('wg-type','dryer',this)">
+                <input type="radio" name="wg-type" value="dryer" />Dryer<span style="opacity:.6;font-weight:600;margin-left:6px;">$130</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('wg-type','stacked',this)">
+                <input type="radio" name="wg-type" value="stacked" />Stacked Laundry Pair<span style="opacity:.6;font-weight:600;margin-left:6px;">$180</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('wg-type','fridge',this)">
+                <input type="radio" name="wg-type" value="fridge" />Integrated Fridge<span style="opacity:.6;font-weight:600;margin-left:6px;">$180</span>
+              </label>
+            </div>
+
+            <div class="scope-block">
+              <h4><i class="fa-solid fa-circle-check"></i> Every appliance install includes</h4>
+              <ul>
+                <li><i class="fa-solid fa-check"></i> Water, drain, power, and cabinet clearance check before fitting</li>
+                <li><i class="fa-solid fa-check"></i> Levelling, securing, and first-run cycle to check for leaks</li>
+                <li><i class="fa-solid fa-check"></i> Settings calibration and manufacturer guidance on handover</li>
+              </ul>
             </div>
           </div>
-          <a class="btn btn-secondary" style="width:100%; margin-top:16px;" href="tel:+61800000000"><i class="fa-solid fa-phone"></i> 1800 OZ INST</a>
-        </div>
 
-        <div class="area-card reveal d4">
-          <h3>Popular service areas</h3>
-          <div class="area-list">
-            <span>Adelaide CBD</span>
-            <span>Glenelg</span>
-            <span>Marion</span>
-            <span>Brighton</span>
-            <span>Mawson Lakes</span>
-            <span>Adelaide Hills</span>
+          <!-- ─ Furniture Details ─ -->
+          <div class="book-card phase-hidden svc-detail" id="phase-furniture">
+            <div class="svc-detail-header">
+              <div class="svc-detail-ico"><i class="fa-solid fa-couch"></i></div>
+              <div>
+                <span class="eyebrow" style="margin:0 0 2px;">Furniture Assembly</span>
+                <h2 style="margin:0;font-size:1.25rem;">Assembly details</h2>
+              </div>
+            </div>
+
+            <p class="section-label">Number of Items</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('furn-qty','1',this)">
+                <input type="radio" name="furn-qty" value="1" checked />1 item<span style="opacity:.6;font-weight:600;margin-left:6px;">$110</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('furn-qty','2',this)">
+                <input type="radio" name="furn-qty" value="2" />2 items<span style="opacity:.6;font-weight:600;margin-left:6px;">$220</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('furn-qty','3',this)">
+                <input type="radio" name="furn-qty" value="3" />3 items<span style="opacity:.6;font-weight:600;margin-left:6px;">$330</span>
+              </label>
+              <label class="opt-pill" onclick="pickOpt('furn-qty','4+',this)">
+                <input type="radio" name="furn-qty" value="4+" />4+ items<span style="opacity:.6;font-weight:600;margin-left:6px;">quote</span>
+              </label>
+            </div>
+
+            <p class="section-label">Furniture Brand</p>
+            <div class="opt-pills">
+              <label class="opt-pill selected" onclick="pickOpt('furn-brand','ikea',this)">
+                <input type="radio" name="furn-brand" value="ikea" checked />IKEA / Flat-pack
+              </label>
+              <label class="opt-pill" onclick="pickOpt('furn-brand','other',this)">
+                <input type="radio" name="furn-brand" value="other" />Other brand
+              </label>
+            </div>
+
+            <div class="scope-block">
+              <h4><i class="fa-solid fa-circle-check"></i> Every assembly includes</h4>
+              <ul>
+                <li><i class="fa-solid fa-check"></i> Assembly using manufacturer instructions and correct tools</li>
+                <li><i class="fa-solid fa-check"></i> Safety wall anchoring for tall furniture units</li>
+                <li><i class="fa-solid fa-check"></i> Final placement, level check, and room tidy on completion</li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </aside>
 
-    </div>
+          <!-- ─ Phase 3: Add-ons ─ -->
+          <div class="book-card phase-hidden" id="phase-addons">
+            <span class="eyebrow"><i class="fa-solid fa-plus-circle"></i> Step 3 — Optional Extras</span>
+            <h2>Add-ons &amp; upgrades</h2>
+            <p>Competitive against Adelaide market rates. Service-specific add-ons appear based on what you've selected above.</p>
+
+            <div class="addon-section-title">Available on any job</div>
+            <div class="addon-grid">
+              <label class="addon-card" data-addon="packaging" data-price="35" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-box"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Packaging Removal &amp; Disposal</div>
+                  <div class="addon-price">+$35</div>
+                  <div class="addon-market">Adelaide market avg: $30–50</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="weekend" data-price="60" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-calendar-week"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Weekend / Public Holiday Rate</div>
+                  <div class="addon-price">+$60</div>
+                  <div class="addon-market">Adelaide market avg: $60–100</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="priority" data-price="45" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-bolt"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Priority Same-Day Booking</div>
+                  <div class="addon-price">+$45</div>
+                  <div class="addon-market">Adelaide market avg: $50–80</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+            </div>
+
+            <div class="addon-section-title phase-hidden tv-addon-grp" id="lbl-tv-addons">TV &amp; AV Upgrades</div>
+            <div class="addon-grid phase-hidden tv-addon-grp" id="grid-tv-addons">
+              <label class="addon-card" data-addon="soundbar" data-price="75" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-volume-high"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Soundbar Wall Mount &amp; Setup</div>
+                  <div class="addon-price">+$75</div>
+                  <div class="addon-market">Adelaide market avg: $70–110</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="streaming" data-price="45" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-wifi"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Streaming Device Setup (Netflix, Apple TV, etc.)</div>
+                  <div class="addon-price">+$45</div>
+                  <div class="addon-market">Adelaide market avg: $40–65</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="surge" data-price="38" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-plug"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Surge Protector + Smart Power Board</div>
+                  <div class="addon-price">+$38</div>
+                  <div class="addon-market">Adelaide market avg: $35–55</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="fireplace" data-price="85" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-fire"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Above-Fireplace TV Mount (specialist bracket)</div>
+                  <div class="addon-price">+$85</div>
+                  <div class="addon-market">Adelaide market avg: $80–130</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+            </div>
+
+            <div class="addon-section-title phase-hidden ant-addon-grp" id="lbl-ant-addons">Antenna &amp; Signal Upgrades</div>
+            <div class="addon-grid phase-hidden ant-addon-grp" id="grid-ant-addons">
+              <label class="addon-card" data-addon="booster" data-price="95" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-signal"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Signal Booster / Amplifier Installation</div>
+                  <div class="addon-price">+$95</div>
+                  <div class="addon-market">Adelaide market avg: $80–140</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="tvpoint" data-price="55" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-square-plus"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Additional TV Wall Plate &amp; Point</div>
+                  <div class="addon-price">+$55</div>
+                  <div class="addon-market">Adelaide market avg: $50–85</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+            </div>
+
+            <div class="addon-section-title phase-hidden cctv-addon-grp" id="lbl-cctv-addons">Security System Upgrades</div>
+            <div class="addon-grid phase-hidden cctv-addon-grp" id="grid-cctv-addons">
+              <label class="addon-card" data-addon="nvr" data-price="95" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-hard-drive"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">NVR / DVR Recorder Setup</div>
+                  <div class="addon-price">+$95</div>
+                  <div class="addon-market">Adelaide market avg: $80–130</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="cloudapp" data-price="55" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-cloud"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Cloud Storage + Mobile App Config</div>
+                  <div class="addon-price">+$55</div>
+                  <div class="addon-market">Adelaide market avg: $50–75</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="floodlight" data-price="85" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-lightbulb"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Floodlight Camera Mounting</div>
+                  <div class="addon-price">+$85</div>
+                  <div class="addon-market">Adelaide market avg: $75–110</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+            </div>
+
+            <div class="addon-section-title phase-hidden wg-addon-grp" id="lbl-wg-addons">Appliance Extras</div>
+            <div class="addon-grid phase-hidden wg-addon-grp" id="grid-wg-addons">
+              <label class="addon-card" data-addon="removal" data-price="65" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-trash-can"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Old Appliance Removal &amp; Disposal</div>
+                  <div class="addon-price">+$65</div>
+                  <div class="addon-market">Adelaide market avg: $55–100</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="plinth" data-price="45" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-ruler-horizontal"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Cabinet Plinth / Kickboard Refit</div>
+                  <div class="addon-price">+$45</div>
+                  <div class="addon-market">Adelaide market avg: $40–70</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+              <label class="addon-card" data-addon="stacking" data-price="45" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Laundry Stacking Kit Installation</div>
+                  <div class="addon-price">+$45</div>
+                  <div class="addon-market">Adelaide market avg: $40–60</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+            </div>
+
+            <div class="addon-section-title phase-hidden furn-addon-grp" id="lbl-furn-addons">Furniture Extras</div>
+            <div class="addon-grid phase-hidden furn-addon-grp" id="grid-furn-addons">
+              <label class="addon-card" data-addon="mirror" data-price="45" onclick="toggleAddon(this)">
+                <input type="checkbox" />
+                <div class="addon-ico"><i class="fa-solid fa-image"></i></div>
+                <div class="addon-body">
+                  <div class="addon-name">Mirror / Artwork Hanging (per item)</div>
+                  <div class="addon-price">+$45</div>
+                  <div class="addon-market">Adelaide market avg: $40–65</div>
+                </div>
+                <i class="fa-solid fa-check addon-tick"></i>
+              </label>
+            </div>
+          </div>
+
+          <!-- ─ Phase 4: Contact Details ─ -->
+          <div class="book-card phase-hidden" id="phase-contact">
+            <span class="eyebrow"><i class="fa-solid fa-user"></i> Step 4 — Your Details</span>
+            <h2>Almost there</h2>
+            <p>We use these to confirm your booking and send technician arrival updates.</p>
+            <div class="contact-grid">
+              <label class="field-label">
+                <span class="lbl">Full name</span>
+                <input class="input-field" id="c-name" autocomplete="name" placeholder="Sarah Thompson" />
+                <span class="field-error-text" id="c-name-err">Please enter your full name.</span>
+              </label>
+              <label class="field-label">
+                <span class="lbl">Phone number</span>
+                <input class="input-field" id="c-phone" autocomplete="tel" placeholder="04XX XXX XXX" inputmode="tel" />
+                <span class="field-error-text" id="c-phone-err">Please enter a valid mobile number.</span>
+              </label>
+              <label class="field-label field-full">
+                <span class="lbl">Email address</span>
+                <input class="input-field" id="c-email" type="email" autocomplete="email" placeholder="you@example.com" />
+                <span class="field-error-text" id="c-email-err">Please enter a valid email address.</span>
+              </label>
+              <label class="field-label">
+                <span class="lbl">Preferred date</span>
+                <input class="input-field" id="c-date" type="date" />
+              </label>
+              <label class="field-label">
+                <span class="lbl">Preferred time</span>
+                <select class="input-field" id="c-time">
+                  <option value="">Any time</option>
+                  <option>Morning (8am – 12pm)</option>
+                  <option>Afternoon (12pm – 5pm)</option>
+                  <option>Priority same-day if available</option>
+                </select>
+              </label>
+              <label class="field-label field-full">
+                <span class="lbl">Job notes <small style="font-weight:600;color:var(--muted);">(optional)</small></span>
+                <textarea class="input-field" id="c-notes" placeholder="E.g. 65" TV on brick wall, soundbar below, please hide cables. Gate code 1234."></textarea>
+              </label>
+            </div>
+            <div class="submit-row">
+              <button class="btn btn-primary" type="button" id="submit-btn">
+                <i class="fa-solid fa-calendar-check"></i> Confirm My Booking
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /form-col -->
+
+        <!-- ── ESTIMATE SIDEBAR ──────────────────────── -->
+        <aside class="est-col">
+          <div class="estimate-dark">
+            <div class="est-header">
+              <h3><i class="fa-solid fa-receipt"></i> Live Estimate</h3>
+              <p>Updates in real time as you choose services and add-ons</p>
+            </div>
+            <div class="est-body">
+              <div class="est-discount-badge" id="est-discount-badge">
+                <i class="fa-solid fa-tag"></i> Multi-service discount applied — save $20
+              </div>
+              <div class="est-items" id="est-items">
+                <div class="est-empty" id="est-empty">
+                  <i class="fa-solid fa-arrow-left"></i>
+                  Select a service to see your live estimate
+                </div>
+              </div>
+              <hr class="est-divider" />
+              <div class="est-total-row">
+                <span class="est-total-label">Estimate</span>
+                <span class="est-total-amount" id="est-total">$0</span>
+              </div>
+              <p class="est-note">Final price confirmed after technician review. Quote locked before any work starts — no surprises.</p>
+            </div>
+            <div class="est-footer">
+              <button class="btn btn-primary" type="button" onclick="scrollToContact()">
+                <i class="fa-solid fa-calendar-check"></i> Review &amp; Confirm
+              </button>
+              <div class="est-trust">
+                <span class="est-trust-item"><i class="fa-solid fa-shield-halved"></i> $10M insured</span>
+                <span class="est-trust-item"><i class="fa-solid fa-bolt"></i> Same-day metro</span>
+                <span class="est-trust-item"><i class="fa-solid fa-star"></i> 5-star rated</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div><!-- /booking-wrap -->
+    </div><!-- /container -->
   </main>
 
-  <!-- ── Success modal ─────────────────────────────────── -->
+  <!-- ── Mobile estimate bar ──────────────────────────── -->
+  <div class="mobile-est-bar" id="mobile-est-bar">
+    <div>
+      <div class="mob-est-label">Live estimate</div>
+      <div class="mob-est-total" id="mob-est-total">$0</div>
+    </div>
+    <button class="btn btn-primary mob-est-btn" type="button" onclick="scrollToContact()">
+      <i class="fa-solid fa-calendar-check"></i> Book Now
+    </button>
+  </div>
+
+  <!-- ── Success Modal ─────────────────────────────────── -->
   <div class="success-modal" id="success-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-card">
       <i class="fa-solid fa-circle-check"></i>
-      <h2 id="modal-title">Booking captured</h2>
-      <p>Your request is ready for the Oz Installers team. A technician will confirm the details and arrival window shortly.</p>
-      <button class="btn btn-primary" id="modal-close" style="width:100%; margin-top:20px;">Back to Home</button>
+      <h2 id="modal-title">Booking captured!</h2>
+      <p>Your request is with the Oz Installers team. A technician will confirm the job details and your arrival window within a few hours.</p>
+      <p style="margin-top:10px;font-size:.88rem;color:var(--muted);" id="modal-summary"></p>
+      <button class="btn btn-primary" id="modal-close" style="width:100%;margin-top:22px;">Back to Home</button>
     </div>
   </div>
 
+  <!-- ── Footer ────────────────────────────────────────── -->
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
@@ -322,6 +979,7 @@
         <h3>Services</h3>
         <a href="services.html#av">TV Mounting</a>
         <a href="services.html#antenna">Starlink</a>
+        <a href="services.html#security">CCTV</a>
         <a href="services.html#furniture">Assembly</a>
       </div>
       <div>
@@ -334,113 +992,343 @@
     <div class="container footer-bottom">Copyright 2026 Oz Installers. Adelaide, South Australia.</div>
   </footer>
 
+  <!-- ═══════════════════ SCRIPT ══════════════════════════ -->
   <script>
-    // Header scroll
-    const hdr = document.getElementById('site-header');
-    window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 20), { passive: true });
+  // ── Adelaide postcode coverage map ──────────────────────
+  const METRO = new Set([5000,5001,5006,5007,5008,5009,5010,5011,5012,5013,5014,5015,5016,5017,5018,5019,5020,5021,5022,5023,5024,5025,5031,5032,5033,5034,5035,5036,5037,5038,5039,5040,5041,5042,5043,5044,5045,5046,5047,5048,5051,5061,5062,5063,5064,5065,5066,5067,5068,5069,5070,5071,5072,5073,5074,5075,5076,5081,5082,5083,5084,5085,5086,5087,5088,5089,5090,5091,5092,5093,5094,5095,5096,5097,5098,5106,5107,5108,5109,5110,5111,5112,5113,5114,5115,5116,5117,5118,5125,5126,5127]);
+  const OUTER = new Set([5158,5159,5160,5161,5162,5163,5164,5165,5166,5167,5168,5169,5170,5171,5172,5173,5174,5175,5210,5211,5212,5214,5250,5255]);
+  const HILLS = new Set([5130,5131,5132,5136,5137,5138,5139,5140,5141,5142,5143,5144,5145,5150,5151,5152,5153,5154,5155,5156,5157,5245,5251,5252]);
 
-    // Mobile menu
-    document.getElementById('menu-toggle').addEventListener('click', () => {
-      document.getElementById('nav-links').classList.toggle('open');
-      document.body.classList.toggle('menu-open');
+  // ── Pricing data ─────────────────────────────────────────
+  const P = {
+    tv:        { small:120, medium:150, large:150, xlarge:200 },
+    tvMount:   { fixed:0, tilt:10, motion:25 },
+    tvWall:    { plaster:0, brick:20, timber:0 },
+    antenna:   { digital:160, starlink2:160, starlink3:160 },
+    antStorey: { single:0, double:30 },
+    cctvBase:  180,
+    cctvStorey:{ single:0, double:30 },
+    cctvQty:   { '2':2, '4':4, '6':6, '8':8 },
+    cctvPkg:   { pkg2:720, pkg4:1440, pkg6:2160, custom:0 },
+    doorbell:  180,
+    wg:        { dishwasher:130, washer:130, dryer:130, stacked:180, fridge:180 },
+    furn:      { '1':110, '2':220, '3':330, '4+':0 },
+    travel:    { metro:0, outer:30, hills:50 },
+    multiDiscount: 20
+  };
+
+  // ── App state ────────────────────────────────────────────
+  const state = { region:'metro', services:{}, addons:{} };
+
+  // ── UI helpers ───────────────────────────────────────────
+  const hdr = document.getElementById('site-header');
+  window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 20), { passive:true });
+  document.getElementById('menu-toggle').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+    document.body.classList.toggle('menu-open');
+  });
+
+  function revealCard(el) {
+    el.classList.remove('phase-hidden');
+    el.classList.add('phase-reveal');
+    el.addEventListener('animationend', () => el.classList.remove('phase-reveal'), { once:true });
+  }
+  function hideCard(el) { el.classList.add('phase-hidden'); }
+
+  function scrollToId(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  function scrollToContact() { scrollToId('phase-contact'); }
+
+  // ── Postcode check ────────────────────────────────────────
+  document.getElementById('check-pc-btn').addEventListener('click', checkPostcode);
+  document.getElementById('postcode-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPostcode(); });
+
+  function checkPostcode() {
+    const raw = document.getElementById('postcode-input').value.trim();
+    const pc  = parseInt(raw, 10);
+    const msg = document.getElementById('coverage-msg');
+    const ico = document.getElementById('coverage-icon');
+    const txt = document.getElementById('coverage-text');
+
+    if (!/^\d{4}$/.test(raw)) {
+      msg.className = 'coverage-msg show warn';
+      ico.className = 'fa-solid fa-triangle-exclamation';
+      txt.textContent = 'Please enter a valid 4-digit South Australian postcode.';
+      return;
+    }
+
+    if (METRO.has(pc)) {
+      state.region = 'metro';
+      msg.className = 'coverage-msg show ok';
+      ico.className = 'fa-solid fa-circle-check';
+      txt.textContent = '✔ ' + raw + ' is in our metro service area — no travel surcharge.';
+      showServicePhase();
+    } else if (OUTER.has(pc) || HILLS.has(pc)) {
+      state.region = HILLS.has(pc) ? 'hills' : 'outer';
+      const surcharge = P.travel[state.region];
+      msg.className = 'coverage-msg show ok';
+      ico.className = 'fa-solid fa-circle-check';
+      txt.textContent = '✔ ' + raw + ' is covered — a $' + surcharge + ' travel surcharge applies for your area.';
+      showServicePhase();
+    } else {
+      msg.className = 'coverage-msg show err';
+      ico.className = 'fa-solid fa-circle-xmark';
+      txt.textContent = 'Sorry — we don’t currently cover postcode ' + raw + '. We serve Greater Adelaide within approx. 50 km of the CBD.';
+    }
+  }
+
+  function showServicePhase() {
+    setTimeout(() => {
+      const el = document.getElementById('phase-service');
+      revealCard(el);
+      scrollToId('phase-service');
+    }, 350);
+  }
+
+  // ── Service toggle ────────────────────────────────────────
+  function toggleSvc(svc, card) {
+    const isOn = card.classList.toggle('selected');
+    card.querySelector('input').checked = isOn;
+
+    const detailId = 'phase-' + svc;
+    const detailEl = document.getElementById(detailId);
+
+    if (isOn) {
+      state.services[svc] = svcDefaults(svc);
+      if (detailEl) revealCard(detailEl);
+      toggleAddonGroup(svc, true);
+    } else {
+      delete state.services[svc];
+      if (detailEl) hideCard(detailEl);
+      toggleAddonGroup(svc, false);
+    }
+
+    const count = Object.keys(state.services).length;
+    const addonsEl  = document.getElementById('phase-addons');
+    const contactEl = document.getElementById('phase-contact');
+    if (count > 0) {
+      if (addonsEl.classList.contains('phase-hidden'))  revealCard(addonsEl);
+      if (contactEl.classList.contains('phase-hidden')) revealCard(contactEl);
+    } else {
+      hideCard(addonsEl);
+      hideCard(contactEl);
+    }
+
+    updateEstimate();
+  }
+
+  function toggleAddonGroup(svc, show) {
+    const map = {
+      tv:         ['lbl-tv-addons','grid-tv-addons'],
+      antenna:    ['lbl-ant-addons','grid-ant-addons'],
+      cctv:       ['lbl-cctv-addons','grid-cctv-addons'],
+      whitegoods: ['lbl-wg-addons','grid-wg-addons'],
+      furniture:  ['lbl-furn-addons','grid-furn-addons'],
+    };
+    (map[svc] || []).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('phase-hidden', !show);
     });
+  }
 
-    // Scroll reveal
-    const ro = new IntersectionObserver((entries) => entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
-    }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  function svcDefaults(svc) {
+    const defaults = {
+      tv:         { size:'small', mount:'fixed', wall:'plaster' },
+      antenna:    { type:'digital', storey:'single' },
+      cctv:       { storey:'single', supply:'customer', qty:'2' },
+      doorbell:   { brand:'ring' },
+      whitegoods: { type:'dishwasher' },
+      furniture:  { qty:'1', brand:'ikea' },
+    };
+    return defaults[svc] || {};
+  }
 
-    // Multi-step form
-    let currentStep = 1;
+  // ── Option pill selection ─────────────────────────────────
+  function pickOpt(group, val, pill) {
+    document.querySelectorAll('[name="' + group + '"]').forEach(r => {
+      const p = r.closest('.opt-pill') || r.closest('.cam-pkg-card');
+      if (p) p.classList.remove('selected');
+    });
+    pill.classList.add('selected');
+    const inp = pill.querySelector('input');
+    if (inp) inp.checked = true;
 
-    function showStep(step) {
-      currentStep = step;
-      document.getElementById('form-step-1').classList.toggle('hidden', step !== 1);
-      document.getElementById('form-step-2').classList.toggle('hidden', step !== 2);
+    const map = {
+      'tv-size':    ['tv','size'],    'tv-mount':   ['tv','mount'],
+      'tv-wall':    ['tv','wall'],    'ant-type':   ['antenna','type'],
+      'ant-storey': ['antenna','storey'], 'cctv-storey':['cctv','storey'],
+      'cctv-supply':['cctv','supply'],'cctv-qty':   ['cctv','qty'],
+      'cctv-pkg':   ['cctv','pkg'],   'db-brand':   ['doorbell','brand'],
+      'wg-type':    ['whitegoods','type'], 'furn-qty':['furniture','qty'],
+      'furn-brand': ['furniture','brand'],
+    };
+    const m = map[group];
+    if (m && state.services[m[0]]) state.services[m[0]][m[1]] = val;
+    updateEstimate();
+  }
 
-      // Progress bar
-      const dot1  = document.getElementById('prog-dot-1');
-      const dot2  = document.getElementById('prog-dot-2');
-      const line  = document.getElementById('prog-line');
-      const stp1  = document.getElementById('prog-step-1');
-      const stp2  = document.getElementById('prog-step-2');
+  // ── CCTV supply toggle ────────────────────────────────────
+  function cctvSupply(which) {
+    document.getElementById('cctv-qty-section').classList.toggle('phase-hidden', which === 'installer');
+    document.getElementById('cctv-pkg-section').classList.toggle('phase-hidden', which === 'customer');
+  }
 
-      if (step === 1) {
-        dot1.className = 'prog-dot active'; stp1.className = 'prog-step is-active';
-        dot2.className = 'prog-dot';        stp2.className = 'prog-step';
-        line.className = 'prog-line';
-      } else {
-        dot1.className = 'prog-dot done';   stp1.className = 'prog-step is-done';
-        dot2.className = 'prog-dot active'; stp2.className = 'prog-step is-active';
-        line.className = 'prog-line done';
+  // ── Add-on toggle ─────────────────────────────────────────
+  function toggleAddon(card) {
+    const isOn = card.classList.toggle('selected');
+    card.querySelector('input').checked = isOn;
+    const key   = card.dataset.addon;
+    const price = parseInt(card.dataset.price, 10) || 0;
+    if (isOn) state.addons[key] = price;
+    else delete state.addons[key];
+    updateEstimate();
+  }
+
+  // ── Service price calc ────────────────────────────────────
+  function svcPrice(svc) {
+    const o = state.services[svc];
+    if (!o) return 0;
+    switch (svc) {
+      case 'tv':
+        return (P.tv[o.size] || 120) + (P.tvMount[o.mount] || 0) + (P.tvWall[o.wall] || 0);
+      case 'antenna':
+        return (P.antenna[o.type] || 160) + (P.antStorey[o.storey] || 0);
+      case 'cctv': {
+        const storey = P.cctvStorey[o.storey] || 0;
+        if (o.supply === 'installer') return (P.cctvPkg[o.pkg] || 720) + storey;
+        return (P.cctvBase * (P.cctvQty[o.qty] || 2)) + storey;
       }
+      case 'doorbell':   return P.doorbell;
+      case 'whitegoods': return P.wg[o.type] || 130;
+      case 'furniture':  return P.furn[o.qty] || 110;
+      default: return 0;
+    }
+  }
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  // ── Update estimate sidebar ───────────────────────────────
+  function updateEstimate() {
+    const cont   = document.getElementById('est-items');
+    const emptyEl= document.getElementById('est-empty');
+    const totalEl= document.getElementById('est-total');
+    const mobTot = document.getElementById('mob-est-total');
+    const badge  = document.getElementById('est-discount-badge');
+
+    const svcKeys = Object.keys(state.services);
+    const travel  = svcKeys.length > 0 ? (P.travel[state.region] || 0) : 0;
+    const multi   = svcKeys.length >= 2 ? P.multiDiscount : 0;
+
+    const lines = [];
+    svcKeys.forEach(s => lines.push({ label: svcLabel(s), price: svcPrice(s), cls: 'service' }));
+    if (travel > 0) lines.push({ label: 'Travel surcharge', price: travel, cls: 'service' });
+    Object.entries(state.addons).forEach(([k, v]) => lines.push({ label: addonLabel(k), price: v, cls: 'addon' }));
+    if (multi > 0) lines.push({ label: 'Multi-service discount', price: -multi, cls: 'discount' });
+
+    cont.innerHTML = '';
+    if (lines.length === 0) {
+      emptyEl.style.display = '';
+      cont.appendChild(emptyEl);
+      totalEl.textContent = '$0';
+      mobTot.textContent  = '$0';
+      badge.classList.remove('show');
+      return;
     }
 
-    function clearError(id) {
-      const f = document.getElementById(id); const e = document.getElementById(id + '-error');
-      if (f) f.classList.remove('field-error');
-      if (e) e.classList.remove('visible');
-    }
-
-    function showError(id) {
-      const f = document.getElementById(id); const e = document.getElementById(id + '-error');
-      if (f) f.classList.add('field-error');
-      if (e) e.classList.add('visible');
-    }
-
-    function validateStep(step) {
-      let ok = true;
-      if (step === 1) {
-        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim());
-        [
-          ['full-name', document.getElementById('full-name').value.trim().length > 1],
-          ['phone',     document.getElementById('phone').value.replace(/\s/g, '').length >= 8],
-          ['email',     emailOk]
-        ].forEach(([id, valid]) => { clearError(id); if (!valid) { showError(id); ok = false; } });
-      }
-      if (step === 2) {
-        clearError('book-suburb');
-        if (!document.getElementById('book-suburb').value) { showError('book-suburb'); ok = false; }
-      }
-      return ok;
-    }
-
-    function prefillFromCalculator() {
-      const params  = new URLSearchParams(window.location.search);
-      const summary = params.get('summary');
-      const total   = params.get('total');
-      if (!summary || !total) return;
-      document.getElementById('job-notes').value = `PRICING ESTIMATE SUMMARY\n${decodeURIComponent(summary)}\n\nEstimated Total: $${total}\n\nAdd any specific notes below:`;
-      document.getElementById('price-banner').classList.add('visible');
-      document.getElementById('price-amount').textContent = `$${total}`;
-    }
-
-    document.getElementById('next-btn').addEventListener('click', () => { if (validateStep(1)) showStep(2); });
-    document.getElementById('back-btn').addEventListener('click', () => showStep(1));
-
-    document.getElementById('booking-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (validateStep(2)) document.getElementById('success-modal').classList.add('visible');
+    emptyEl.style.display = 'none';
+    let total = 0;
+    lines.forEach(ln => {
+      total += ln.price;
+      const d = document.createElement('div');
+      d.className = 'est-item' + (ln.cls !== 'service' ? ' ' + ln.cls : '');
+      d.innerHTML = '<span class="est-item-label">' + ln.label + '</span><span class="est-item-price">' +
+        (ln.price < 0 ? '–$' + Math.abs(ln.price) : '$' + ln.price) + '</span>';
+      cont.appendChild(d);
     });
 
-    document.getElementById('modal-close').addEventListener('click', () => window.location.href = 'index.html');
+    if (total < 0) total = 0;
+    const isQuote = svcKeys.some(s => state.services[s]?.qty === '4+' || state.services[s]?.pkg === 'custom');
+    const str = isQuote ? 'Quote TBC' : '$' + total;
+    totalEl.textContent = str;
+    mobTot.textContent  = str;
+    badge.classList.toggle('show', multi > 0);
+  }
 
-    document.getElementById('success-modal').addEventListener('click', (e) => {
-      if (e.target.id === 'success-modal') e.currentTarget.classList.remove('visible');
+  function svcLabel(svc) {
+    return { tv:'TV Wall Mount', antenna:'Antenna / Starlink', cctv:'CCTV Camera System',
+             doorbell:'Video Doorbell', whitegoods:'White Goods Install', furniture:'Furniture Assembly' }[svc] || svc;
+  }
+  function addonLabel(key) {
+    return { packaging:'Packaging Removal', weekend:'Weekend Rate', priority:'Priority Same-Day',
+             soundbar:'Soundbar Mount', streaming:'Streaming Device Setup', surge:'Surge Protector',
+             fireplace:'Above-Fireplace Mount', booster:'Signal Booster', tvpoint:'Extra TV Point',
+             nvr:'NVR / DVR Setup', cloudapp:'Cloud + App Config', floodlight:'Floodlight Camera Mount',
+             removal:'Old Appliance Removal', plinth:'Plinth / Kickboard Refit', stacking:'Stacking Kit Install',
+             mirror:'Mirror / Artwork Hanging' }[key] || key;
+  }
+
+  // ── Form submission ───────────────────────────────────────
+  document.getElementById('submit-btn').addEventListener('click', function() {
+    const name  = document.getElementById('c-name').value.trim();
+    const phone = document.getElementById('c-phone').value.replace(/\s/g,'');
+    const email = document.getElementById('c-email').value.trim();
+    let ok = true;
+
+    [['c-name', name.length > 1, 'c-name-err'],
+     ['c-phone', phone.length >= 8, 'c-phone-err'],
+     ['c-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'c-email-err']
+    ].forEach(([id, valid, errId]) => {
+      document.getElementById(id).classList.toggle('field-error', !valid);
+      document.getElementById(errId).classList.toggle('visible', !valid);
+      if (!valid) ok = false;
     });
 
-    ['full-name', 'phone', 'email', 'book-suburb'].forEach((id) => {
-      document.getElementById(id).addEventListener('input',  () => clearError(id));
-      document.getElementById(id).addEventListener('change', () => clearError(id));
-    });
+    if (!Object.keys(state.services).length) {
+      alert('Please select at least one service before confirming.');
+      scrollToId('phase-service');
+      return;
+    }
+    if (!ok) return;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      prefillFromCalculator();
-      showStep(1);
+    const svcNames = Object.keys(state.services).map(svcLabel).join(', ');
+    const est = document.getElementById('est-total').textContent;
+    document.getElementById('modal-summary').textContent = 'Services: ' + svcNames + '. Estimate: ' + est + '.';
+    document.getElementById('success-modal').classList.add('visible');
+  });
+
+  document.getElementById('modal-close').addEventListener('click', () => window.location.href = 'index.html');
+  document.getElementById('success-modal').addEventListener('click', e => {
+    if (e.target.id === 'success-modal') e.currentTarget.classList.remove('visible');
+  });
+
+  ['c-name','c-phone','c-email'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      document.getElementById(id).classList.remove('field-error');
+      document.getElementById(id + '-err').classList.remove('visible');
     });
+  });
+
+  // ── Prefill from pricing calculator ──────────────────────
+  (function() {
+    const params  = new URLSearchParams(window.location.search);
+    const total   = params.get('total');
+    const service = params.get('service');
+    if (total) {
+      document.getElementById('est-total').textContent = '$' + total;
+      document.getElementById('mob-est-total').textContent = '$' + total;
+    }
+    if (service && ['tv','antenna','cctv','doorbell','whitegoods','furniture'].includes(service)) {
+      const card = document.querySelector('.svc-pick-card[data-svc="' + service + '"]');
+      if (card) toggleSvc(service, card);
+    }
+  })();
+
+  // ── Scroll reveal ─────────────────────────────────────────
+  const ro = new IntersectionObserver((entries) => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+  }), { threshold:0.07, rootMargin:'0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
   </script>
 </body>
 </html>
