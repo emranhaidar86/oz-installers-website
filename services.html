@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Oz Installers service catalogue for TV mounting, Starlink, antenna, smart home security, appliances, and furniture assembly across Adelaide." />
+  <meta name="description" content="Oz Installers service catalogue — TV mounting, Starlink, antenna, smart home security, appliances, and furniture assembly across Adelaide." />
   <title>Services | Oz Installers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,12 +11,53 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="custom.css" />
   <style>
-    .page-hero { --page-image: url("https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2200&q=85"); }
-    .cta-band { --cta-image: url("https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&w=1800&q=85"); }
+    .page-hero {
+      --page-image: url("https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2200&q=85");
+    }
+    .cta-band {
+      --cta-image: url("https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&w=1800&q=85");
+    }
+
+    /* Service nav tabs */
+    .svc-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 44px;
+    }
+
+    .svc-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1.5px solid var(--line);
+      background: white;
+      color: var(--body-text);
+      font-size: .88rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: border-color .18s, background .18s, color .18s, box-shadow .18s;
+    }
+
+    .svc-nav a:hover,
+    .svc-nav a.active {
+      border-color: var(--brand);
+      background: rgba(0,124,137,.07);
+      color: var(--brand);
+      box-shadow: 0 4px 14px rgba(0,124,137,.1);
+    }
+
+    .svc-nav a i { font-size: .85rem; }
+
+    /* Feature service override for this page */
+    .feature-service { scroll-margin-top: 96px; }
   </style>
 </head>
 <body>
-  <header class="site-header">
+
+  <header class="site-header" id="site-header">
     <div class="nav-wrap">
       <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a>
       <button class="menu-toggle" id="menu-toggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
@@ -29,14 +70,15 @@
     </div>
   </header>
 
+  <!-- ── Page Hero ─────────────────────────────────────── -->
   <section class="page-hero">
     <div class="container">
-      <span class="hero-kicker">Service Catalogue</span>
-      <h1>Five specialist services. One careful team.</h1>
+      <span class="hero-kicker"><i class="fa-solid fa-screwdriver-wrench"></i> Service Catalogue</span>
+      <h1>Five specialist services.<br>One careful team.</h1>
       <p>Every service is designed for a clean finish, reliable setup, and practical handover. Choose a category, price it instantly, or book the whole visit.</p>
-      <div class="action-row" style="margin-top:24px">
-        <a class="btn btn-primary" href="pricing.html">Open Pricing Calculator</a>
-        <a class="btn btn-secondary" href="book.html">Book a Technician</a>
+      <div class="action-row">
+        <a class="btn btn-primary" href="pricing.html"><i class="fa-solid fa-calculator"></i> Open Pricing Calculator</a>
+        <a class="btn btn-ghost" href="book.html"><i class="fa-solid fa-calendar-check"></i> Book a Technician</a>
       </div>
     </div>
   </section>
@@ -44,97 +86,164 @@
   <main>
     <section class="section">
       <div class="container">
-        <article class="feature-service" id="av">
-          <img src="https://images.unsplash.com/photo-1558882224-dda166733046?auto=format&fit=crop&w=1000&q=85" alt="Modern mounted TV installation in a living room" />
+
+        <!-- Quick-jump nav -->
+        <nav class="svc-nav reveal" aria-label="Jump to service">
+          <a href="#av"><i class="fa-solid fa-tv"></i> TV &amp; AV</a>
+          <a href="#antenna"><i class="fa-solid fa-satellite-dish"></i> Starlink &amp; Antenna</a>
+          <a href="#security"><i class="fa-solid fa-shield-halved"></i> Smart Security</a>
+          <a href="#whitegoods"><i class="fa-solid fa-blender"></i> Whitegoods</a>
+          <a href="#furniture"><i class="fa-solid fa-couch"></i> Furniture</a>
+        </nav>
+
+        <!-- TV & AV -->
+        <article class="feature-service reveal" id="av">
+          <div class="fs-img">
+            <img src="https://images.unsplash.com/photo-1558882224-dda166733046?auto=format&fit=crop&w=1000&q=85" alt="Modern mounted TV installation in a living room" />
+          </div>
           <div class="feature-copy">
             <span class="eyebrow">From $120</span>
             <h2>TV and Audio Visual</h2>
-            <p>Premium wall mounting, soundbar placement, in-wall cable concealment, streaming setup, and home theatre tuning.</p>
-            <div class="pill-row"><span class="pill">Fixed brackets</span><span class="pill">Tilt brackets</span><span class="pill">Full motion</span><span class="pill">Soundbars</span></div>
+            <p>Premium wall mounting, soundbar placement, in-wall cable concealment, streaming setup, and home theatre tuning for any room size.</p>
+            <div class="pill-row">
+              <span class="pill"><i class="fa-solid fa-check"></i> Fixed brackets</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Tilt brackets</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Full motion</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Soundbars</span>
+            </div>
             <ul class="check-list">
               <li><i class="fa-solid fa-check"></i> Stud, brick, masonry, and plasterboard mounting assessment.</li>
               <li><i class="fa-solid fa-check"></i> Cable management using in-wall routing or external trunking.</li>
               <li><i class="fa-solid fa-check"></i> Device connection, picture check, app setup, and handover.</li>
             </ul>
-            <a class="btn btn-primary" href="pricing.html?service=tv">Price This Service</a>
+            <div class="action-row">
+              <a class="btn btn-primary" href="pricing.html?service=tv"><i class="fa-solid fa-calculator"></i> Price This Service</a>
+              <a class="btn btn-secondary" href="book.html">Book Now</a>
+            </div>
           </div>
         </article>
 
-        <article class="feature-service" id="antenna">
-          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85" alt="Technology setup for connected home internet" />
-          <div class="feature-copy">
+        <!-- Starlink & Antenna -->
+        <article class="feature-service reveal" id="antenna" style="direction:rtl;">
+          <div class="fs-img" style="direction:ltr;">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85" alt="Technology setup for connected home internet" />
+          </div>
+          <div class="feature-copy" style="direction:ltr;">
             <span class="eyebrow">From $160</span>
             <h2>Starlink, Antennas and Signal</h2>
             <p>Digital antennas, Starlink roof mounts, cable routing, router positioning, signal testing, and multi-room distribution.</p>
-            <div class="pill-row"><span class="pill">Starlink Gen 2/3</span><span class="pill">Digital TV</span><span class="pill">Roof access</span><span class="pill">Signal testing</span></div>
+            <div class="pill-row">
+              <span class="pill"><i class="fa-solid fa-check"></i> Starlink Gen 2/3</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Digital TV</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Roof access</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Signal testing</span>
+            </div>
             <ul class="check-list">
               <li><i class="fa-solid fa-check"></i> Roof position planning for strong line of sight and weather sealing.</li>
               <li><i class="fa-solid fa-check"></i> Clean cable runs through ceiling spaces where suitable.</li>
               <li><i class="fa-solid fa-check"></i> Router, receiver, and TV point checks before completion.</li>
             </ul>
-            <a class="btn btn-primary" href="pricing.html?service=antenna">Price This Service</a>
+            <div class="action-row">
+              <a class="btn btn-primary" href="pricing.html?service=antenna"><i class="fa-solid fa-calculator"></i> Price This Service</a>
+              <a class="btn btn-secondary" href="book.html">Book Now</a>
+            </div>
           </div>
         </article>
 
-        <article class="feature-service" id="security">
-          <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=1000&q=85" alt="Outdoor smart security camera installed on a home" />
+        <!-- Smart Security -->
+        <article class="feature-service reveal" id="security">
+          <div class="fs-img">
+            <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=1000&q=85" alt="Outdoor smart security camera installed on a home" />
+          </div>
           <div class="feature-copy">
             <span class="eyebrow">From $180</span>
             <h2>Smart Home Security</h2>
             <p>Camera arrays, video doorbells, smart locks, motion zones, NVR setup, cloud storage, and mobile app configuration.</p>
-            <div class="pill-row"><span class="pill">Cameras</span><span class="pill">Doorbells</span><span class="pill">Smart locks</span><span class="pill">Mobile alerts</span></div>
+            <div class="pill-row">
+              <span class="pill"><i class="fa-solid fa-check"></i> Cameras</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Doorbells</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Smart locks</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Mobile alerts</span>
+            </div>
             <ul class="check-list">
               <li><i class="fa-solid fa-check"></i> Camera positioning for entry points, driveways, and blind spots.</li>
               <li><i class="fa-solid fa-check"></i> Wi-Fi, recorder, and mobile app setup with notification testing.</li>
               <li><i class="fa-solid fa-check"></i> Neat cable runs and privacy-conscious viewing angle setup.</li>
             </ul>
-            <a class="btn btn-primary" href="pricing.html?service=security">Price This Service</a>
+            <div class="action-row">
+              <a class="btn btn-primary" href="pricing.html?service=security"><i class="fa-solid fa-calculator"></i> Price This Service</a>
+              <a class="btn btn-secondary" href="book.html">Book Now</a>
+            </div>
           </div>
         </article>
 
-        <article class="feature-service" id="whitegoods">
-          <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1000&q=85" alt="Modern kitchen with installed appliances" />
-          <div class="feature-copy">
+        <!-- Whitegoods -->
+        <article class="feature-service reveal" id="whitegoods" style="direction:rtl;">
+          <div class="fs-img" style="direction:ltr;">
+            <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1000&q=85" alt="Modern kitchen with installed appliances" />
+          </div>
+          <div class="feature-copy" style="direction:ltr;">
             <span class="eyebrow">From $130</span>
             <h2>Whitegoods and Appliances</h2>
             <p>Dishwashers, washing machines, dryers, stacked laundry pairs, integrated fridges, levelling, connection, and function testing.</p>
-            <div class="pill-row"><span class="pill">Dishwashers</span><span class="pill">Laundry</span><span class="pill">Integrated units</span><span class="pill">Disposal add-on</span></div>
+            <div class="pill-row">
+              <span class="pill"><i class="fa-solid fa-check"></i> Dishwashers</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Laundry</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Integrated units</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Disposal add-on</span>
+            </div>
             <ul class="check-list">
               <li><i class="fa-solid fa-check"></i> Water, drain, power, and cabinet fit checks before install.</li>
               <li><i class="fa-solid fa-check"></i> Levelling and first-run testing to spot leaks or vibration.</li>
               <li><i class="fa-solid fa-check"></i> Optional old packaging removal and tidy handover.</li>
             </ul>
-            <a class="btn btn-primary" href="pricing.html?service=whitegoods">Price This Service</a>
+            <div class="action-row">
+              <a class="btn btn-primary" href="pricing.html?service=whitegoods"><i class="fa-solid fa-calculator"></i> Price This Service</a>
+              <a class="btn btn-secondary" href="book.html">Book Now</a>
+            </div>
           </div>
         </article>
 
-        <article class="feature-service" id="furniture">
-          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1000&q=85" alt="Finished assembled furniture in a styled room" />
+        <!-- Furniture Assembly -->
+        <article class="feature-service reveal" id="furniture">
+          <div class="fs-img">
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1000&q=85" alt="Finished assembled furniture in a styled room" />
+          </div>
           <div class="feature-copy">
             <span class="eyebrow">From $110</span>
             <h2>Furniture Assembly</h2>
             <p>IKEA, flat-pack furniture, wardrobes, desks, storage systems, outdoor play equipment, wall anchoring, and packaging removal.</p>
-            <div class="pill-row"><span class="pill">IKEA</span><span class="pill">Wardrobes</span><span class="pill">Shelving</span><span class="pill">Wall anchoring</span></div>
+            <div class="pill-row">
+              <span class="pill"><i class="fa-solid fa-check"></i> IKEA</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Wardrobes</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Shelving</span>
+              <span class="pill"><i class="fa-solid fa-check"></i> Wall anchoring</span>
+            </div>
             <ul class="check-list">
               <li><i class="fa-solid fa-check"></i> Correct assembly using brand instructions and proper tools.</li>
               <li><i class="fa-solid fa-check"></i> Safety anchoring for tall furniture and wall units.</li>
               <li><i class="fa-solid fa-check"></i> Room placement, final adjustment, and optional cardboard removal.</li>
             </ul>
-            <a class="btn btn-primary" href="pricing.html?service=furniture">Price This Service</a>
+            <div class="action-row">
+              <a class="btn btn-primary" href="pricing.html?service=furniture"><i class="fa-solid fa-calculator"></i> Price This Service</a>
+              <a class="btn btn-secondary" href="book.html">Book Now</a>
+            </div>
           </div>
         </article>
+
       </div>
     </section>
 
-    <section class="section alt">
-      <div class="container">
+    <!-- ── CTA band ────────────────────────────────────────── -->
+    <section class="section section-alt">
+      <div class="container reveal r-scale">
         <div class="cta-band">
-          <span class="hero-kicker">Bundle and Save</span>
+          <span class="eyebrow"><i class="fa-solid fa-tag"></i> Bundle and Save</span>
           <h2>Need more than one thing done?</h2>
           <p>Combine TV mounting, appliance setup, security, or assembly in one visit and the calculator applies a multi-service discount automatically.</p>
           <div class="action-row">
-            <a class="btn btn-primary" href="pricing.html">Build My Quote</a>
-            <a class="btn btn-secondary" href="book.html">Book Directly</a>
+            <a class="btn btn-primary" href="pricing.html"><i class="fa-solid fa-calculator"></i> Build My Quote</a>
+            <a class="btn btn-ghost" href="book.html"><i class="fa-solid fa-calendar-check"></i> Book Directly</a>
           </div>
         </div>
       </div>
@@ -143,21 +252,61 @@
 
   <footer class="site-footer">
     <div class="container footer-grid">
-      <div><a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a><p>Premium installation services across Greater Adelaide.</p></div>
-      <div><h3>Explore</h3><a href="index.html">Home</a><a href="pricing.html">Pricing</a><a href="book.html">Book Now</a></div>
-      <div><h3>Services</h3><a href="#av">TV Mounting</a><a href="#antenna">Starlink</a><a href="#security">Security</a></div>
-      <div><h3>Areas</h3><a href="#">Adelaide CBD</a><a href="#">Marion</a><a href="#">Adelaide Hills</a></div>
+      <div>
+        <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a>
+        <p>Premium installation services across Greater Adelaide.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <a href="index.html">Home</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="book.html">Book Now</a>
+      </div>
+      <div>
+        <h3>Services</h3>
+        <a href="#av">TV Mounting</a>
+        <a href="#antenna">Starlink</a>
+        <a href="#security">Security</a>
+        <a href="#furniture">Assembly</a>
+      </div>
+      <div>
+        <h3>Areas</h3>
+        <a href="#">Adelaide CBD</a>
+        <a href="#">Marion</a>
+        <a href="#">Glenelg</a>
+        <a href="#">Adelaide Hills</a>
+      </div>
     </div>
     <div class="container footer-bottom">Copyright 2026 Oz Installers. Adelaide, South Australia.</div>
   </footer>
 
   <script>
-    const toggle = document.getElementById('menu-toggle');
-    const links = document.getElementById('nav-links');
-    toggle.addEventListener('click', () => {
-      links.classList.toggle('open');
+    const hdr = document.getElementById('site-header');
+    window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 20), { passive: true });
+
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('nav-links').classList.toggle('open');
       document.body.classList.toggle('menu-open');
     });
+
+    const ro = new IntersectionObserver((entries) => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+    }), { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    // Highlight active service nav pill on scroll
+    const sections = ['av','antenna','security','whitegoods','furniture'];
+    const navLinks = document.querySelectorAll('.svc-nav a');
+
+    const so = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(id => { const el = document.getElementById(id); if (el) so.observe(el); });
   </script>
 </body>
 </html>

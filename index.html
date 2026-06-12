@@ -11,12 +11,71 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="custom.css" />
   <style>
-    .hero { --hero-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85"); }
-    .cta-band { --cta-image: url("https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1800&q=85"); }
+    .hero {
+      --hero-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85");
+    }
+    .cta-band {
+      --cta-image: url("https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1800&q=85");
+    }
+
+    /* ── Testimonials ── */
+    .review-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .review-card {
+      padding: 28px;
+      border-radius: var(--r);
+      background: white;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      transition: transform .22s, box-shadow .22s;
+    }
+
+    .review-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+    .review-stars { color: #f0b429; font-size: .88rem; margin-bottom: 14px; }
+
+    .review-card p {
+      color: var(--body-text);
+      font-size: .93rem;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .reviewer-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 900;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+
+    .reviewer-avatar.a { background: linear-gradient(135deg, var(--brand), var(--green)); }
+    .reviewer-avatar.b { background: linear-gradient(135deg, #7c3aed, var(--brand)); }
+    .reviewer-avatar.c { background: linear-gradient(135deg, var(--clay), var(--gold)); }
+
+    .review-author strong { display: block; font-size: .9rem; color: var(--ink); }
+    .review-author span   { display: block; font-size: .8rem; color: var(--muted); }
+
+    @media (max-width: 900px) { .review-strip { grid-template-columns: 1fr; } }
+    @media (max-width: 620px) { .review-strip { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <header class="site-header">
+
+  <header class="site-header" id="site-header">
     <div class="nav-wrap">
       <a class="brand" href="index.html" aria-label="Oz Installers home">
         <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
@@ -33,27 +92,43 @@
   </header>
 
   <main>
+
+    <!-- ── Hero ──────────────────────────────────────────── -->
     <section class="hero" aria-label="Oz Installers hero">
+      <div class="hero-bg"></div>
       <div class="hero-content">
-        <span class="hero-kicker"><i class="fa-solid fa-star"></i> 4.9 rated Adelaide installers</span>
-        <h1>Clean installs. Beautiful homes. Zero hassle.</h1>
-        <p>TV mounting, Starlink, antennas, smart security, appliances, and flat-pack assembly delivered by careful local technicians across Greater Adelaide.</p>
+        <span class="hero-kicker"><i class="fa-solid fa-star"></i> 4.9 rated · 147+ Adelaide reviews</span>
+        <h1>Clean installs.<br><em>Beautiful homes.</em></h1>
+        <p>TV mounting, Starlink, antennas, smart security, appliances, and flat-pack assembly — delivered by careful local technicians across Greater Adelaide.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="pricing.html"><i class="fa-solid fa-calculator"></i> Get Instant Price</a>
-          <a class="btn btn-secondary" href="services.html"><i class="fa-solid fa-table-cells"></i> Explore Services</a>
+          <a class="btn btn-ghost" href="services.html"><i class="fa-solid fa-table-cells"></i> Explore Services</a>
         </div>
         <div class="hero-stats" aria-label="Business highlights">
-          <div class="hero-stat"><strong>$10M</strong><span>Public liability insured</span></div>
-          <div class="hero-stat"><strong>Same day</strong><span>Metro availability</span></div>
-          <div class="hero-stat"><strong>147+</strong><span>Local reviews</span></div>
-          <div class="hero-stat"><strong>5 areas</strong><span>Specialist install teams</span></div>
+          <div class="hero-stat">
+            <strong>$10M</strong>
+            <span>Public liability cover</span>
+          </div>
+          <div class="hero-stat">
+            <strong>Same day</strong>
+            <span>Metro availability</span>
+          </div>
+          <div class="hero-stat">
+            <strong>147+</strong>
+            <span>Local reviews</span>
+          </div>
+          <div class="hero-stat">
+            <strong>5 areas</strong>
+            <span>Specialist install teams</span>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- ── Services ──────────────────────────────────────── -->
     <section class="section">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div>
             <span class="eyebrow">What We Do</span>
             <h2>Practical trade work with a showroom finish.</h2>
@@ -61,51 +136,63 @@
           <p>Every job is quoted clearly, installed neatly, tested before handover, and left clean enough that the only thing you notice is the result.</p>
         </div>
         <div class="service-grid">
-          <article class="service-card">
-            <img src="https://images.unsplash.com/photo-1558882224-dda166733046?auto=format&fit=crop&w=900&q=80" alt="Modern living room with wall mounted television" />
+          <article class="service-card reveal d1">
+            <div class="img-wrap">
+              <img src="https://images.unsplash.com/photo-1558882224-dda166733046?auto=format&fit=crop&w=900&q=80" alt="Modern living room with wall mounted television" />
+            </div>
             <div class="card-body">
               <h3>TV and Audio Visual</h3>
               <p>Wall mounting, soundbars, hidden cabling, streaming setup, and home theatre tuning.</p>
               <a class="mini-link" href="services.html#av">View AV installs <i class="fa-solid fa-arrow-right"></i></a>
             </div>
           </article>
-          <article class="service-card">
-            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Home technology devices on a desk" />
+          <article class="service-card reveal d2">
+            <div class="img-wrap">
+              <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Home technology devices on a desk" />
+            </div>
             <div class="card-body">
               <h3>Starlink and Antennas</h3>
               <p>Roof mounts, signal testing, cable routing, router placement, and multi-room connections.</p>
               <a class="mini-link" href="services.html#antenna">See signal services <i class="fa-solid fa-arrow-right"></i></a>
             </div>
           </article>
-          <article class="service-card">
-            <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=900&q=80" alt="Smart home security camera on a home exterior" />
+          <article class="service-card reveal d3">
+            <div class="img-wrap">
+              <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=900&q=80" alt="Smart home security camera on a home exterior" />
+            </div>
             <div class="card-body">
               <h3>Smart Home Security</h3>
               <p>Cameras, doorbells, smart locks, motion zones, mobile apps, and recorder setup.</p>
               <a class="mini-link" href="services.html#security">Secure your home <i class="fa-solid fa-arrow-right"></i></a>
             </div>
           </article>
-          <article class="service-card">
-            <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80" alt="Bright modern kitchen with built in appliances" />
+          <article class="service-card reveal d1">
+            <div class="img-wrap">
+              <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80" alt="Bright modern kitchen with built in appliances" />
+            </div>
             <div class="card-body">
               <h3>Whitegoods</h3>
               <p>Dishwashers, washing machines, dryers, stacked laundry pairs, and integrated fridges.</p>
               <a class="mini-link" href="services.html#whitegoods">Install appliances <i class="fa-solid fa-arrow-right"></i></a>
             </div>
           </article>
-          <article class="service-card">
-            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=80" alt="Stylish room with assembled furniture" />
+          <article class="service-card reveal d2">
+            <div class="img-wrap">
+              <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=80" alt="Stylish room with assembled furniture" />
+            </div>
             <div class="card-body">
               <h3>Furniture Assembly</h3>
               <p>IKEA, wardrobes, desks, storage systems, wall anchoring, and packaging removal.</p>
               <a class="mini-link" href="services.html#furniture">Build the room <i class="fa-solid fa-arrow-right"></i></a>
             </div>
           </article>
-          <article class="service-card">
-            <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80" alt="Technician tools ready for installation work" />
+          <article class="service-card reveal d3">
+            <div class="img-wrap">
+              <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80" alt="Technician tools ready for installation work" />
+            </div>
             <div class="card-body">
               <h3>Multi-Service Visits</h3>
-              <p>Bundle several jobs into one visit and unlock a $20 combined booking discount.</p>
+              <p>Bundle several jobs into one visit and unlock a $20 combined booking discount automatically.</p>
               <a class="mini-link" href="pricing.html">Build a quote <i class="fa-solid fa-arrow-right"></i></a>
             </div>
           </article>
@@ -113,13 +200,14 @@
       </div>
     </section>
 
-    <section class="section alt">
+    <!-- ── Why choose us ─────────────────────────────────── -->
+    <section class="section section-alt">
       <div class="container split">
-        <div class="photo-stack" aria-hidden="true">
-          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="" />
-          <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=700&q=85" alt="" />
+        <div class="photo-stack reveal r-left">
+          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="Clean modern room after professional installation" />
+          <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=700&q=85" alt="Technician completing a neat installation" />
         </div>
-        <div class="split-copy">
+        <div class="split-copy reveal r-right">
           <span class="eyebrow">Why Customers Choose Us</span>
           <h2>The careful installer makes all the difference.</h2>
           <p>Good installation is more than drilling holes. It is planning the position, protecting surfaces, choosing the right fixings, concealing the mess, testing the system, and leaving the home calm again.</p>
@@ -136,9 +224,41 @@
       </div>
     </section>
 
+    <!-- ── Stats (dark) ───────────────────────────────────── -->
+    <section class="section section-dark">
+      <div class="container">
+        <div class="section-head reveal" style="margin-bottom:0;">
+          <div>
+            <span class="eyebrow">Our Track Record</span>
+            <h2 style="color:white;">Numbers that speak for themselves.</h2>
+          </div>
+          <p style="color:rgba(255,255,255,.6);">From one-bedroom apartments to Hills properties, Adelaide trusts us to get it right first time.</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-block reveal d1">
+            <span class="stat-num" data-target="147" data-suffix="+">147+</span>
+            <span class="stat-label">Verified Adelaide reviews</span>
+          </div>
+          <div class="stat-block reveal d2">
+            <span class="stat-num" data-target="10" data-prefix="$" data-suffix="M">$10M</span>
+            <span class="stat-label">Public liability cover</span>
+          </div>
+          <div class="stat-block reveal d3">
+            <span class="stat-num" data-target="4.9" data-suffix=" ★">4.9 ★</span>
+            <span class="stat-label">Average customer rating</span>
+          </div>
+          <div class="stat-block reveal d4">
+            <span class="stat-num" data-target="5" data-suffix=" areas">5 areas</span>
+            <span class="stat-label">Greater Adelaide coverage</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Trust Cards ────────────────────────────────────── -->
     <section class="section">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div>
             <span class="eyebrow">Trust Signals</span>
             <h2>Built for homeowners who want it done once.</h2>
@@ -146,44 +266,123 @@
           <p>From CBD apartments to Adelaide Hills homes, we keep the process simple and the workmanship tight.</p>
         </div>
         <div class="trust-grid">
-          <div class="trust-card"><i class="fa-solid fa-shield-halved"></i><h3>Fully insured</h3><p>$10M public liability cover for every job.</p></div>
-          <div class="trust-card"><i class="fa-solid fa-receipt"></i><h3>Clear pricing</h3><p>Instant estimates and locked booking notes.</p></div>
-          <div class="trust-card"><i class="fa-solid fa-broom"></i><h3>Clean finish</h3><p>Packaging and dust handled before we leave.</p></div>
-          <div class="trust-card"><i class="fa-solid fa-location-dot"></i><h3>Local coverage</h3><p>Adelaide CBD, Glenelg, Marion, Mawson Lakes, Hills, and more.</p></div>
+          <div class="trust-card reveal d1">
+            <div class="t-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>Fully insured</h3>
+            <p>$10M public liability cover on every job, no exceptions.</p>
+          </div>
+          <div class="trust-card reveal d2">
+            <div class="t-icon"><i class="fa-solid fa-receipt"></i></div>
+            <h3>Clear pricing</h3>
+            <p>Instant estimates, locked booking notes, and no surprise add-ons.</p>
+          </div>
+          <div class="trust-card reveal d3">
+            <div class="t-icon"><i class="fa-solid fa-broom"></i></div>
+            <h3>Clean finish</h3>
+            <p>Packaging and dust handled before we leave your property.</p>
+          </div>
+          <div class="trust-card reveal d4">
+            <div class="t-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <h3>Local coverage</h3>
+            <p>Adelaide CBD, Glenelg, Marion, Mawson Lakes, Hills, and more.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section alt">
+    <!-- ── How it works ───────────────────────────────────── -->
+    <section class="section section-alt">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div>
             <span class="eyebrow">Simple Process</span>
             <h2>Quote, book, done.</h2>
           </div>
-          <p>No vague callback loop. You can price your job, pass the details into booking, and get ready for the technician.</p>
+          <p>No vague callback loop. Price your job, lock the booking, and get ready for the technician.</p>
         </div>
-        <div class="work-steps">
-          <div class="work-step"><strong>1. Build your estimate</strong><p>Select services, suburb, extras, and urgency in the live calculator.</p></div>
-          <div class="work-step"><strong>2. Lock the booking</strong><p>Your selections are attached to the booking form so the technician sees the job clearly.</p></div>
-          <div class="work-step"><strong>3. Enjoy the result</strong><p>We install, test, tidy, and walk you through the finished setup.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="cta-band">
-          <span class="hero-kicker">Ready when you are</span>
-          <h2>Get your Adelaide installation priced in under a minute.</h2>
-          <p>Use the calculator for a fast estimate, or go straight to booking if you already know what you need.</p>
-          <div class="action-row">
-            <a class="btn btn-primary" href="pricing.html">Start Calculator</a>
-            <a class="btn btn-secondary" href="book.html">Book Directly</a>
+        <div class="steps-grid">
+          <div class="step-block reveal d1" data-n="1">
+            <div class="step-ico"><i class="fa-solid fa-calculator"></i></div>
+            <strong>1. Build your estimate</strong>
+            <p>Select services, suburb, extras, and urgency in the live calculator. Your price is ready in under a minute.</p>
+          </div>
+          <div class="step-block reveal d2" data-n="2">
+            <div class="step-ico"><i class="fa-solid fa-lock"></i></div>
+            <strong>2. Lock the booking</strong>
+            <p>Your selections carry straight into the booking form so the technician sees the job clearly before they arrive.</p>
+          </div>
+          <div class="step-block reveal d3" data-n="3">
+            <div class="step-ico"><i class="fa-solid fa-circle-check"></i></div>
+            <strong>3. Enjoy the result</strong>
+            <p>We install, test, tidy up, and walk you through the finished setup before we call it done.</p>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- ── Reviews ────────────────────────────────────────── -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Customer Reviews</span>
+            <h2>What Adelaide homeowners say.</h2>
+          </div>
+          <p>Real feedback from recent jobs across metro and Hills properties.</p>
+        </div>
+        <div class="review-strip">
+          <div class="review-card reveal d1">
+            <div class="review-stars">★★★★★</div>
+            <p>"Had a 75-inch TV and soundbar installed. Everything was done neatly, cables are completely hidden, and the tech tested every HDMI and showed me the remote before leaving."</p>
+            <div class="review-author">
+              <div class="reviewer-avatar a">SC</div>
+              <div>
+                <strong>Sarah C.</strong>
+                <span>Unley, Adelaide</span>
+              </div>
+            </div>
+          </div>
+          <div class="review-card reveal d2">
+            <div class="review-stars">★★★★★</div>
+            <p>"Starlink roof mount done in a couple of hours. Proper bracket, sealed penetration, and cable run into the roof cavity. Much better than the previous job someone else did."</p>
+            <div class="review-author">
+              <div class="reviewer-avatar b">MK</div>
+              <div>
+                <strong>Mark K.</strong>
+                <span>Stirling, Hills</span>
+              </div>
+            </div>
+          </div>
+          <div class="review-card reveal d3">
+            <div class="review-stars">★★★★★</div>
+            <p>"Booked a dishwasher and wardrobe assembly together. Both done on the same visit, packaging taken away, and the whole apartment was tidy when they left. Will use again."</p>
+            <div class="review-author">
+              <div class="reviewer-avatar c">JP</div>
+              <div>
+                <strong>Jess P.</strong>
+                <span>Adelaide CBD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA Band ───────────────────────────────────────── -->
+    <section class="section">
+      <div class="container reveal r-scale">
+        <div class="cta-band">
+          <span class="eyebrow"><i class="fa-solid fa-bolt"></i> Ready when you are</span>
+          <h2>Get your Adelaide installation priced in under a minute.</h2>
+          <p>Use the calculator for a fast estimate, or go straight to booking if you already know what you need.</p>
+          <div class="action-row">
+            <a class="btn btn-primary" href="pricing.html"><i class="fa-solid fa-calculator"></i> Start Calculator</a>
+            <a class="btn btn-ghost" href="book.html"><i class="fa-solid fa-calendar-check"></i> Book Directly</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="site-footer">
@@ -192,20 +391,65 @@
         <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-bolt"></i></span><span>Oz Installers</span></a>
         <p>Premium installation services across Greater Adelaide. TV mounting, Starlink, smart security, appliances, and flat-pack assembly.</p>
       </div>
-      <div><h3>Explore</h3><a href="services.html">Services</a><a href="pricing.html">Pricing</a><a href="book.html">Book Now</a></div>
-      <div><h3>Services</h3><a href="services.html#av">TV Mounting</a><a href="services.html#antenna">Starlink</a><a href="services.html#security">Security</a></div>
-      <div><h3>Areas</h3><a href="#">Adelaide CBD</a><a href="#">Glenelg</a><a href="#">Adelaide Hills</a></div>
+      <div>
+        <h3>Explore</h3>
+        <a href="services.html">Services</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="book.html">Book Now</a>
+      </div>
+      <div>
+        <h3>Services</h3>
+        <a href="services.html#av">TV Mounting</a>
+        <a href="services.html#antenna">Starlink</a>
+        <a href="services.html#security">Security</a>
+        <a href="services.html#furniture">Assembly</a>
+      </div>
+      <div>
+        <h3>Areas</h3>
+        <a href="#">Adelaide CBD</a>
+        <a href="#">Glenelg</a>
+        <a href="#">Marion</a>
+        <a href="#">Adelaide Hills</a>
+      </div>
     </div>
     <div class="container footer-bottom">Copyright 2026 Oz Installers. Adelaide, South Australia.</div>
   </footer>
 
   <script>
-    const toggle = document.getElementById('menu-toggle');
-    const links = document.getElementById('nav-links');
-    toggle.addEventListener('click', () => {
-      links.classList.toggle('open');
+    // Header scroll
+    const hdr = document.getElementById('site-header');
+    window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 20), { passive: true });
+
+    // Mobile menu
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('nav-links').classList.toggle('open');
       document.body.classList.toggle('menu-open');
     });
+
+    // Scroll reveal
+    const ro = new IntersectionObserver((entries) => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+    }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    // Number counters
+    const co = new IntersectionObserver((entries) => entries.forEach(e => {
+      if (!e.isIntersecting || !e.target.dataset.target) return;
+      const target = +e.target.dataset.target;
+      const pfx = e.target.dataset.prefix || '';
+      const sfx = e.target.dataset.suffix || '';
+      const t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - t0) / 1500, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const val = target % 1 === 0 ? Math.round(target * ease) : (target * ease).toFixed(1);
+        e.target.textContent = pfx + val + sfx;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      co.unobserve(e.target);
+    }), { threshold: 0.5 });
+    document.querySelectorAll('[data-target]').forEach(el => co.observe(el));
   </script>
 </body>
 </html>
